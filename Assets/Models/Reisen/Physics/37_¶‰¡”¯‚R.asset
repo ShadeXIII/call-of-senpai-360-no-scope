@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!134 &13400000
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: "37_\x8D\xB6\u2030\xA1\u201D\xAF\u201AR"
+  dynamicFriction: .5
+  staticFriction: .5
+  bounciness: 0
+  frictionCombine: 0
+  bounceCombine: 0
