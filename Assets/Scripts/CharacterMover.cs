@@ -20,12 +20,8 @@ public class CharacterMover : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        m_tDirMod.x = 0.0f;
-        m_tDirMod.y = 0.0f;
-        m_tDirMod.z = 0.0f;
         m_OPlayerController = GetComponent<CharacterController>();
-        m_OPlayerCamera = GetComponent<Camera>();
-        m_tMovedir.y = 0.0f;
+        m_OPlayerCamera = GetComponentInChildren<Camera>();
     }
 
     // Update is called once per frame
@@ -33,13 +29,7 @@ public class CharacterMover : MonoBehaviour
     {
         //get input
         PlayerInput();
-        //apply gravity
-        m_tMovedir.y = m_tMovedir.y + (m_fGravity * Time.deltaTime);
-        //apply movement
-        m_OPlayerController.Move(m_tMovedir * Time.deltaTime);
-
-        m_tMovedir.x = 0.0f;
-        //Debug.Log("update.");
+        //GetComponent<MeshRenderer>().transform.rotation.SetLookRotation(m_OPlayerCamera.transform.forward, new Vector3(0, 1, 0));
     }
 
     private void PlayerInput()
@@ -78,44 +68,27 @@ public class CharacterMover : MonoBehaviour
 
     private void MoveRight()
     {
-        m_tMovedir = new Vector3(0, m_tMovedir.y, 0);
-        m_tMovedir = transform.TransformDirection(m_tMovedir);
-        if (m_OPlayerController.isGrounded)
-            m_tMovedir.x = m_fSpeed;
-        else
-            m_tMovedir.x = m_fSpeed * 0.3f;
+        
     }
 
     private void MoveLeft()
     {
-        m_tMovedir = new Vector3(0, m_tMovedir.y, 0);
-        m_tMovedir = transform.TransformDirection(m_tMovedir);
-        if (m_OPlayerController.isGrounded)
-            m_tMovedir.x = -m_fSpeed;
-        else
-            m_tMovedir.x = -m_fSpeed * 0.3f;
+       
     }
 
     private void MoveForward()
     {
-        m_tMovedir = transform.TransformDirection(m_OPlayerCamera.transform.forward);
-        m_tMovedir.x =+ m_fSpeed;
+        transform.Translate(m_OPlayerCamera.transform.forward.normalized * m_fSpeed * Time.deltaTime);
     }
 
     private void MoveBackward()
     {
-        m_tMovedir = transform.TransformDirection(m_OPlayerCamera.transform.forward);
-        m_tMovedir.x =- m_fSpeed;
+       
     }
 
     private void Jump()
     {
-        if (m_OPlayerController.isGrounded)
-        {
-            m_tMovedir = new Vector3(m_tMovedir.x, 0, 0);
-            m_tMovedir = transform.TransformDirection(m_tMovedir);
-            m_tMovedir.y = m_fJmpstr;
-        }
+       
     }
 
   
