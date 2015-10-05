@@ -4,93 +4,78 @@ using System.Collections;
 
 public class CharacterMover : MonoBehaviour
 {
-    //public ==============================
-    public float m_fGravity = -180.3f;//-9.8f;
-    public float m_fSpeed;
-    public float m_fJmpstr;
-    public Vector3 m_tDirMod;
-    //======================================
-    //private===============================
-    private CharacterController m_OPlayerController;
-    private Camera m_OPlayerCamera;
-    private Vector3 m_tMovedir;
-    private float m_fNormSpeed = 0.0f;
-    //=======================================
+	[SerializeField]
+	float m_fAcceleration;
+	
+	[SerializeField]
+	float m_fMaxSpeed;
+	
+	[SerializeField]
+	float m_fJumpPower;
+	
+	Rigidbody m_Body;
+	Animator m_Animator;
 
-    // Use this for initialization
-    void Start()
-    {
-        m_OPlayerController = GetComponent<CharacterController>();
-        m_OPlayerCamera = GetComponentInChildren<Camera>();
-    }
+	private Vector3 m_vecCurrMoveDir;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //get input
-        PlayerInput();
-        //GetComponent<MeshRenderer>().transform.rotation.SetLookRotation(m_OPlayerCamera.transform.forward, new Vector3(0, 1, 0));
-    }
+	void Start() {
+		m_Body = gameObject.GetComponentInChildren<Rigidbody> ();
+		m_Animator = gameObject.GetComponentInChildren<Animator> ();
+	}
 
-    private void PlayerInput()
-    {
-        if (Input.GetKey(KeyCode.Space) && m_OPlayerController.isGrounded)
-        {
-            Jump();
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            //move right	
-            MoveRight();
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            //move left	
-            MoveLeft();
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            MoveForward();
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
+	void FixedUpdate() {
+		
+		// Since moving can affect physics, only do it on FixedUpdate()
+		ReadInput ();
+		HandleTranslation ();
+		
+	}
 
-        }
-
-
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            Debug.Log("Fired");
-        }
-
-
-    }
-
-    private void MoveRight()
-    {
-        
-    }
-
-    private void MoveLeft()
-    {
-       
-    }
-
-    private void MoveForward()
-    {
-        transform.Translate(m_OPlayerCamera.transform.forward.normalized * m_fSpeed * Time.deltaTime);
-    }
-
-    private void MoveBackward()
-    {
-       
-    }
-
-    private void Jump()
-    {
-       
-    }
-
-  
+	private void ReadInput() {
+		
+		m_vecCurrMoveDir = Vector3.zero;
+		
+		if (Input.GetKey(KeyCode.D))
+		{
+			//move right
+			m_vecCurrMoveDir.x = 1.0f;
+		}
+		if (Input.GetKey(KeyCode.A))
+		{
+			//move left	
+			m_vecCurrMoveDir.x = -1.0f;
+		}
+		if (Input.GetKey(KeyCode.W))
+		{
+			m_vecCurrMoveDir.z = 1.0f;
+		}
+		
+		if (Input.GetKey(KeyCode.S))
+		{
+			m_vecCurrMoveDir.z = -1.0f;
+		}
+		
+		m_vecCurrMoveDir.Normalize ();
+		
+	}
+	
+	private void HandleTranslation() {
+		
+		Vector3 vecWorldSpaceMove = m_vecCurrMoveDir * m_fAcceleration;
+		float fScale = Mathf.Max( (m_fMaxSpeed - m_Body.velocity.magnitude) / m_fMaxSpeed, 0.0f ); 
+		
+		m_Body.AddRelativeForce (vecWorldSpaceMove * fScale);
+		
+		Debug.Log (m_Body.velocity.magnitude);
+		
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			m_Body.AddRelativeForce( Vector3.up * m_fJumpPower );
+		}
+		
+		// Update animation.
+		m_Animator.SetFloat ("Speed", Mathf.Max( m_Body.velocity.magnitude / m_fMaxSpeed, 0.0001f ) );
+	}
+	
 }
 
