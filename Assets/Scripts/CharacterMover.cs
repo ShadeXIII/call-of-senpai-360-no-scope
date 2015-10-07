@@ -11,7 +11,7 @@ public class CharacterMover : MonoBehaviour
 	float m_fMaxSpeed;
 	
 	[SerializeField]
-	float m_fJumpPower;
+	float m_fJumpSpeed;
 	
 	Rigidbody m_Body;
 	Animator m_Animator;
@@ -60,21 +60,26 @@ public class CharacterMover : MonoBehaviour
 	}
 	
 	private void HandleTranslation() {
-		
-		Vector3 vecWorldSpaceMove = m_vecCurrMoveDir * m_fAcceleration;
-		float fScale = Mathf.Max( (m_fMaxSpeed - m_Body.velocity.magnitude) / m_fMaxSpeed, 0.0f ); 
-		
-		m_Body.AddRelativeForce (vecWorldSpaceMove * fScale);
-		
-		Debug.Log (m_Body.velocity.magnitude);
-		
-		if (Input.GetKeyDown(KeyCode.Space))
+
+		Vector3 worldMoveDir = transform.TransformDirection (m_vecCurrMoveDir);
+		Vector3 horizontalVelocity = new Vector3 (m_Body.velocity.x, 0.0f, m_Body.velocity.z);
+
+		float fVelInDir = Vector3.Dot (worldMoveDir, horizontalVelocity);
+		float fVelCap = m_fMaxSpeed - fVelInDir;
+
+		m_Body.velocity += worldMoveDir * Mathf.Min( fVelCap, m_fAcceleration * Time.fixedDeltaTime );
+
+		bool bGrounded = Physics.Raycast (transform.position, Vector3.down, 1.1f);
+		Debug.DrawLine (transform.position, transform.position + Vector3.down * 1.1f);
+
+		if (Input.GetKeyDown(KeyCode.Space) && bGrounded)
 		{
-			m_Body.AddRelativeForce( Vector3.up * m_fJumpPower );
+			m_Body.velocity = new Vector3( m_Body.velocity.x, m_fJumpSpeed, m_Body.velocity.z );
 		}
 		
 		// Update animation.
-		m_Animator.SetFloat ("Speed", Mathf.Max( m_Body.velocity.magnitude / m_fMaxSpeed, 0.0001f ) );
+		m_Animator.SetBool ("Grounded", bGrounded);
+		m_Animator.SetFloat ("Speed", horizontalVelocity.magnitude / m_fMaxSpeed );
 	}
 	
 }
