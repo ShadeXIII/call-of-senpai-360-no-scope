@@ -7,8 +7,7 @@ public class TriggerHurt : MonoBehaviour {
     float m_fDamage;
     [SerializeField]
     float m_fROD;
-    [SerializeField]
-    bool m_bConstant;
+   
 
     private bool m_bDoDamage;
     private float m_fTime;
@@ -23,16 +22,13 @@ public class TriggerHurt : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (!m_bConstant)
+        if (!m_bDoDamage)
         {
-            if (!m_bDoDamage)
+            m_fTime += Time.deltaTime;
+            if (m_fTime > m_fROD)
             {
-                m_fTime += Time.deltaTime;
-                if (m_fTime > m_fROD)
-                {
-                    m_fTime = 0.0f;
-                    m_bDoDamage = true;
-                }
+                m_fTime = 0.0f;
+                m_bDoDamage = true;
             }
         }
     }
