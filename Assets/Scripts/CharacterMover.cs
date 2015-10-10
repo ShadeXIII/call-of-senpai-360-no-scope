@@ -13,9 +13,6 @@ public class CharacterMover : MonoBehaviour
 	[SerializeField]
 	float m_fJumpSpeed;
 
-    [SerializeField]
-    float m_fHeal;
-	
 	Rigidbody m_Body;
 	Animator m_Animator;
 
@@ -58,11 +55,6 @@ public class CharacterMover : MonoBehaviour
 			m_vecCurrMoveDir.z = -1.0f;
 		}
 
-        if (Input.GetKey(KeyCode.Z))
-        {
-            Heal();
-        }
-
 		m_vecCurrMoveDir.Normalize ();
 		
 	}
@@ -89,11 +81,6 @@ public class CharacterMover : MonoBehaviour
 		m_Animator.SetBool ("Grounded", bGrounded);
 		m_Animator.SetFloat ("Speed", horizontalVelocity.magnitude / m_fMaxSpeed );
 	}
-
-    private void Heal()
-    {
-        GetComponent<Health>().Heal(m_fHeal);
-    }
 
 }
 
