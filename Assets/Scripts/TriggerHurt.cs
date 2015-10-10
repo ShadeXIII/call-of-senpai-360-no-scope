@@ -35,8 +35,8 @@ public class TriggerHurt : MonoBehaviour {
 
     void OnTriggerEnter(Collider collision)
     {
-        collision.gameObject.GetComponent<CharacterMover>().TakeDamage(m_fDamage);
-        Debug.Log("col enter");
+        collision.gameObject.GetComponent<Health>().TakeDamage(m_fDamage);
+        //Debug.Log("col enter");
         m_bDoDamage = false;
     }
 
@@ -44,8 +44,8 @@ public class TriggerHurt : MonoBehaviour {
     {
         if (m_bDoDamage)
         {
-            collision.gameObject.GetComponent<CharacterMover>().TakeDamage(m_fDamage);
-            Debug.Log("col stay");
+            collision.gameObject.GetComponent<Health>().TakeDamage(m_fDamage);
+            //Debug.Log("col stay");
             m_bDoDamage = false;
         }
     }

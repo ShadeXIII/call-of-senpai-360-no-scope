@@ -14,9 +14,6 @@ public class CharacterMover : MonoBehaviour
 	float m_fJumpSpeed;
 
     [SerializeField]
-    float m_fHealth;
-
-    [SerializeField]
     float m_fHeal;
 	
 	Rigidbody m_Body;
@@ -61,11 +58,6 @@ public class CharacterMover : MonoBehaviour
 			m_vecCurrMoveDir.z = -1.0f;
 		}
 
-        if (Input.GetKey(KeyCode.H))
-        {
-            Debug.Log(m_fHealth);
-        }
-
         if (Input.GetKey(KeyCode.Z))
         {
             Heal();
@@ -98,15 +90,9 @@ public class CharacterMover : MonoBehaviour
 		m_Animator.SetFloat ("Speed", horizontalVelocity.magnitude / m_fMaxSpeed );
 	}
 
-    public void TakeDamage(float damage)
-    {
-        m_fHealth -= damage;
-        Debug.Log("damaged");
-    }
-
     private void Heal()
     {
-        m_fHealth += m_fHeal;
+        GetComponent<Health>().Heal(m_fHeal);
     }
 
 }
