@@ -76,10 +76,12 @@ public class CharacterMover : MonoBehaviour
 		{
 			m_Body.velocity = new Vector3( m_Body.velocity.x, m_fJumpSpeed, m_Body.velocity.z );
 		}
-		
-		// Update animation.
-		m_Animator.SetBool ("Grounded", bGrounded);
-		m_Animator.SetFloat ("Speed", horizontalVelocity.magnitude / m_fMaxSpeed );
+
+		if (m_Animator.avatar.isValid) {
+			// Update animation.
+			m_Animator.SetBool ("Grounded", bGrounded);
+			m_Animator.SetFloat ("Speed", horizontalVelocity.magnitude / m_fMaxSpeed);
+		}
 	}
 
 }

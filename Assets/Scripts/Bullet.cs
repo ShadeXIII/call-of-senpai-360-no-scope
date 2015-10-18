@@ -17,7 +17,9 @@ public class Bullet : MonoBehaviour {
     {
         if (collision != null)
         {
-            collision.gameObject.GetComponent<Health>().TakeDamage(10);
+			Health currHealth = collision.gameObject.GetComponent<Health>();
+			if( currHealth != null )
+				currHealth.TakeDamage(10);
         }
     }
 }

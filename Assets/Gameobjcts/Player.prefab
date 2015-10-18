@@ -74,6 +74,7 @@ GameObject:
   - 114: {fileID: 11442658}
   - 114: {fileID: 11455404}
   - 114: {fileID: 11482286}
+  - 114: {fileID: 11440984}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2266,7 +2267,7 @@ Transform:
   m_Children:
   - {fileID: 405296}
   m_Father: {fileID: 459550}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!4 &412418
 Transform:
   m_ObjectHideFlags: 1
@@ -2877,7 +2878,7 @@ Transform:
   m_Children:
   - {fileID: 461632}
   m_Father: {fileID: 459550}
-  m_RootOrder: 5
+  m_RootOrder: 4
 --- !u!4 &444760
 Transform:
   m_ObjectHideFlags: 1
@@ -2961,12 +2962,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 199566}
-  m_LocalRotation: {x: .421260208, y: .486014664, z: .501526773, w: .578619599}
-  m_LocalPosition: {x: .0860000029, y: -.0209999997, z: .0149999997}
-  m_LocalScale: {x: 1.00001347, y: 1.00001121, z: 1.00001132}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .108000003, y: -.174999997, z: .0250000004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 468826}
-  m_Father: {fileID: 459550}
+  m_Father: {fileID: 466964}
   m_RootOrder: 0
 --- !u!4 &453880
 Transform:
@@ -3122,7 +3123,6 @@ Transform:
   m_LocalPosition: {x: .0882471278, y: 4.2360378e-07, z: -2.8049576e-06}
   m_LocalScale: {x: .999996662, y: .999996901, z: .999996901}
   m_Children:
-  - {fileID: 451802}
   - {fileID: 411636}
   - {fileID: 479160}
   - {fileID: 495534}
@@ -3266,7 +3266,8 @@ Transform:
   m_LocalRotation: {x: -1.81821734e-13, y: 1.85143551e-15, z: -9.09494702e-13, w: 1}
   m_LocalPosition: {x: 0, y: .592396617, z: .101776123}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 451802}
   m_Father: {fileID: 488856}
   m_RootOrder: 0
 --- !u!4 &467454
@@ -3394,7 +3395,7 @@ Transform:
   m_Children:
   - {fileID: 446028}
   m_Father: {fileID: 459550}
-  m_RootOrder: 6
+  m_RootOrder: 5
 --- !u!4 &475776
 Transform:
   m_ObjectHideFlags: 1
@@ -3469,7 +3470,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 459550}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!4 &480738
 Transform:
   m_ObjectHideFlags: 1
@@ -3648,7 +3649,7 @@ Transform:
   m_Children:
   - {fileID: 465094}
   m_Father: {fileID: 459550}
-  m_RootOrder: 4
+  m_RootOrder: 3
 --- !u!4 &491868
 Transform:
   m_ObjectHideFlags: 1
@@ -3699,7 +3700,7 @@ Transform:
   m_Children:
   - {fileID: 454516}
   m_Father: {fileID: 459550}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!4 &495946
 Transform:
   m_ObjectHideFlags: 1
@@ -3785,7 +3786,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: .100000001
+  near clip plane: .0500000007
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -3908,7 +3909,7 @@ Animator:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 189196}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 0f4d3b4cbf56b1b43b75648d868b831e, type: 3}
+  m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 7017b3b8d0cbec94297ab9d4804545f6, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -3946,6 +3947,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_gobTarget: {fileID: 140692}
+--- !u!114 &11440984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15f90a0066347b74e93f35cd7d18217b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fHealth: 100
+  m_fMaxHealth: 100
+  m_bNoMax: 0
+  m_fHealTime: 5
+  m_fHealAmount: 15
 --- !u!114 &11442658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3985,7 +4002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db77b96107783aa44b24323ca8e63eb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gobProjectile: {fileID: 130792, guid: 1ebcf863e2f76c147b66d22419fd4a9b, type: 2}
+  m_gobProjectile: {fileID: 0}
   m_gobOrigin: {fileID: 178596}
   m_fFireRate: 12
   m_fProjectileSpeed: 60
@@ -4005,7 +4022,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: .5
+  m_Radius: .25
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

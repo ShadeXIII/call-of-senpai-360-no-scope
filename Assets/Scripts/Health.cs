@@ -30,6 +30,8 @@ public class Health : MonoBehaviour {
 	void Update () 
     {
         GetInput();
+
+		Debug.DrawLine (transform.position + Vector3.up, transform.position + Vector3.up + Vector3.up * (m_fHealth / m_fMaxHealth), Color.red);
 	}
 
     void GetInput()
