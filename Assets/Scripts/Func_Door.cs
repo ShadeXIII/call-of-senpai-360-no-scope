@@ -23,6 +23,9 @@ public class Func_Door : MonoBehaviour
     bool m_bOpenNegZAxis;
 
     [SerializeField]
+    bool m_bToggle;
+
+    [SerializeField]
     bool m_bStayOpen;
 
     [SerializeField]
@@ -58,7 +61,8 @@ public class Func_Door : MonoBehaviour
     private bool m_bInCycle;
     //used to keep the door from activating again if stay open is true
     //not exactly necessary if people use trigger_use properly but this is a fail safe
-    private bool m_bUsedOnce;
+    private bool m_bUsedOnce; 
+
 
 
     // Use this for initialization
@@ -121,6 +125,11 @@ public class Func_Door : MonoBehaviour
                 {
                     //play close clip
                     PlayClose();
+                    if (m_bToggle)
+                    {
+                        m_bInCycle = false;
+                        return;
+                    }
                     if (m_fOpenTimer >= m_fTimeOpen)
                     {
                         m_fOpenTimer = 0;
@@ -159,6 +168,7 @@ public class Func_Door : MonoBehaviour
                 }
             case (int)DoorState.Closed:
                 {
+                   
                     //play close clip
                     PlayClose();
                     m_bInCycle = false;
@@ -181,6 +191,11 @@ public class Func_Door : MonoBehaviour
                 {
                     //play close clip
                     PlayClose();
+                    if (m_bToggle)
+                    {
+                        m_bInCycle = false;
+                        return;
+                    }
                     if (m_fOpenTimer >= m_fTimeOpen)
                     {
                         m_fOpenTimer = 0;
@@ -241,6 +256,11 @@ public class Func_Door : MonoBehaviour
                 {
                     //play close clip
                     PlayClose();
+                    if (m_bToggle)
+                    {
+                        m_bInCycle = false;
+                        return;
+                    }
                     if (m_fOpenTimer >= m_fTimeOpen)
                     {
                         m_fOpenTimer = 0;
@@ -301,6 +321,11 @@ public class Func_Door : MonoBehaviour
                 {
                     //play close clip
                     PlayClose();
+                    if (m_bToggle)
+                    {
+                        m_bInCycle = false;
+                        return;
+                    }
                     if (m_fOpenTimer >= m_fTimeOpen)
                     {
                         m_fOpenTimer = 0;
@@ -361,6 +386,11 @@ public class Func_Door : MonoBehaviour
                 {
                     //play close clip
                     PlayClose();
+                    if (m_bToggle)
+                    {
+                        m_bInCycle = false;
+                        return;
+                    }
                     if (m_fOpenTimer >= m_fTimeOpen)
                     {
                         m_fOpenTimer = 0;
@@ -421,6 +451,11 @@ public class Func_Door : MonoBehaviour
                 {
                     //play close clip
                     PlayClose();
+                    if (m_bToggle)
+                    {
+                        m_bInCycle = false;
+                        return;
+                    }
                     if (m_fOpenTimer >= m_fTimeOpen)
                     {
                         m_fOpenTimer = 0;
@@ -493,11 +528,51 @@ public class Func_Door : MonoBehaviour
 
     void Use()
     {
-        if (m_bUsedOnce == false)
+        if (m_bUsedOnce == false && m_bToggle == false)
         {
             m_bInCycle = true;
             m_iDoorState = (int)DoorState.MovingToOpen;
             PlayStart();
+        }
+        else if (m_bToggle == true)
+        {
+            //Debug.Log("pre toggle: " + m_iDoorState);
+            Toggle();
+            //Debug.Log("post toggle: " + m_iDoorState);
+            m_bInCycle = true;
+        }
+    }
+
+    void Toggle()
+    {
+        switch (m_iDoorState)
+        {
+            case (int)DoorState.Open:
+                {
+                    m_iDoorState = (int)DoorState.MovingToClose;
+                    break;
+                }
+            case (int)DoorState.Closed:
+                {
+                    m_iDoorState = (int)DoorState.MovingToOpen;
+                    break;
+                }
+            case (int)DoorState.MovingToOpen:
+                {
+                    m_iDoorState = (int)DoorState.MovingToClose;
+                    break;
+                }
+            case (int)DoorState.MovingToClose:
+                {
+                    m_iDoorState = (int)DoorState.MovingToOpen;
+                    break;
+                }
+            default:
+                {
+                    Debug.Log("Something went horribly wrong with this door!!!");
+                    m_iDoorState = (int)DoorState.Closed;
+                    break;
+                }
         }
     }
 
