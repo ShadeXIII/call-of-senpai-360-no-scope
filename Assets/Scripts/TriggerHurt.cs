@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TriggerHurt : MonoBehaviour {
+public class TriggerHurt : MonoBehaviour
+{
 
     [SerializeField]
     float m_fDamage;
     [SerializeField]
     float m_fROD;
-   
+    [SerializeField]
+    bool m_bEnabled = true;
+
 
     private bool m_bDoDamage;
     private float m_fTime;
@@ -22,13 +25,16 @@ public class TriggerHurt : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (!m_bDoDamage)
+        if (m_bEnabled)
         {
-            m_fTime += Time.deltaTime;
-            if (m_fTime > m_fROD)
+            if (!m_bDoDamage)
             {
-                m_fTime = 0.0f;
-                m_bDoDamage = true;
+                m_fTime += Time.deltaTime;
+                if (m_fTime > m_fROD)
+                {
+                    m_fTime = 0.0f;
+                    m_bDoDamage = true;
+                }
             }
         }
     }
@@ -48,5 +54,10 @@ public class TriggerHurt : MonoBehaviour {
             //Debug.Log("col stay");
             m_bDoDamage = false;
         }
+    }
+
+    void Use()
+    {
+        m_bEnabled = !m_bEnabled;
     }
 }
