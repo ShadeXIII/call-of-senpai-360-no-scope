@@ -146,7 +146,7 @@ public class TriggerUse : MonoBehaviour, IUseinterface
                         //m_tTarget[i].SendMessage("IUseinterface.Use");
                         canuse.Use();
                     }
-                    
+                    Debug.Log("used");
                 }
                 m_bUsed = true;
                 m_fTimer = 0.0f;

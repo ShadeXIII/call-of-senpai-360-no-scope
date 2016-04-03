@@ -4,60 +4,64 @@ using System.Collections;
 public class TriggerHurt : MonoBehaviour, IUseinterface
 {
 
-    [SerializeField]
-    float m_fDamage;
-    [SerializeField]
-    float m_fROD;
-    [SerializeField]
-    bool m_bEnabled;
+    
+    public float m_fDamage;
+    
+    public float m_fDamageRate;
 
+    public bool m_bEnabled;
 
-    private bool m_bDoDamage;
-    private float m_fTime;
+    private float m_fTime; 
 
     // Use this for initialization
     void Start()
     {
         m_fTime = 0.0f;
-        m_bDoDamage = true;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (m_bEnabled)
+            Gizmos.color = Color.green;
+        else
+            Gizmos.color = Color.red;
+
+        Gizmos.DrawSphere(this.gameObject.transform.position, 0.2f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (m_bEnabled)
-        {
-            if (!m_bDoDamage)
-            {
-                m_fTime += Time.deltaTime;
-                if (m_fTime > m_fROD)
-                {
-                    m_fTime = 0.0f;
-                    m_bDoDamage = true;
-                }
-            }
-        }
+        m_fTime += Time.deltaTime;
     }
 
     void OnTriggerEnter(Collider collision)
     {
-        collision.gameObject.GetComponent<Health>().TakeDamage(m_fDamage);
-        //Debug.Log("col enter");
-        m_bDoDamage = false;
+        Trigger(collision);
     }
 
     void OnTriggerStay(Collider collision)
     {
-        if (m_bDoDamage)
+        Trigger(collision);
+    }
+
+    private void Trigger(Collider collision)
+    {
+        if (m_bEnabled)
         {
-            collision.gameObject.GetComponent<Health>().TakeDamage(m_fDamage);
-            //Debug.Log("col stay");
-            m_bDoDamage = false;
+            if (m_fTime > m_fDamageRate)
+            {
+                //do the dmg
+                m_fTime = 0.0f;
+                //Debug.Log(m_fDamage);
+                collision.gameObject.GetComponent<Health>().TakeDamage(m_fDamage);
+            }
         }
     }
 
     void IUseinterface.Use()
     {
         m_bEnabled = !m_bEnabled;
+        //Debug.Log("toggled");
     }
 }
