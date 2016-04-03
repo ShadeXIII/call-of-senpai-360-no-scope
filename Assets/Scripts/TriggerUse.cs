@@ -165,8 +165,8 @@ public class TriggerUse : MonoBehaviour {
             {
                 for (int i = 0; i < m_tTarget.Length; i++)
                 {
-                    m_tTarget[i].SendMessage("Use");
-                    Debug.Log(m_tTarget[i].name);
+                    m_tTarget[i].SendMessage("Use", 1.0f);
+                   // Debug.Log(m_tTarget[i].name);
                 }
                 m_bUsed = true;
                 m_fTimer = 0.0f;
@@ -174,10 +174,11 @@ public class TriggerUse : MonoBehaviour {
         }
     }
 
-    void Use()
+    void Use(float val)
     {
+        Debug.Log(m_bEnabled);
         m_bEnabled = !m_bEnabled;
-        Debug.Log("use");
+        Debug.Log(m_bEnabled);
     }
 
 }
