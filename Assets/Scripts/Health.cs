@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Health : MonoBehaviour {
-
-    [SerializeField]
-    float m_fHealth;
 
     [SerializeField]
     float m_fMaxHealth;
@@ -13,78 +11,72 @@ public class Health : MonoBehaviour {
     bool m_bNoMax;
 
     [SerializeField]
-    float m_fHealTime;
+    Slider m_UHealthBar;
 
     [SerializeField]
-    float m_fHealAmount;
+    Image m_UHealthBarColor;
 
-    private float m_fHealTimer;
+    [SerializeField]
+    Color m_CFullHealth;
+
+    [SerializeField]
+    Color m_CNoHealth;
 
 	// Use this for initialization
 	void Start () 
     {
-        m_fHealTimer = 0;
+        m_UHealthBar.maxValue = m_fMaxHealth;
+        m_UHealthBar.value = m_fMaxHealth;
+        SetHealthColor();
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        GetInput();
 
-		Debug.DrawLine (transform.position + Vector3.up, transform.position + Vector3.up + Vector3.up * (m_fHealth / m_fMaxHealth), Color.red);
 	}
-
-    void GetInput()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Debug.Log(m_fHealth);
-        }
-
-        if (Input.GetButton("Heal"))
-        {
-            m_fHealTimer += Time.deltaTime;
-            Debug.Log(m_fHealTimer);
-            if (m_fHealTimer > m_fHealTime)
-            {
-                Heal();
-                m_fHealTimer = 0;
-                //Debug.Log("Healed one");
-            }
-        }
-
-        if (Input.GetButtonUp("Heal"))
-        {
-            m_fHealTimer = 0;
-        }
-    }
 
     public void TakeDamage(float damage)
     {
-        m_fHealth -= damage;
-        if(m_fHealth < 0)
+        m_UHealthBar.value -= damage;
+        if(m_UHealthBar.value <= 0)
         {
             //do something because this thing is dead.
+            //possibly make a death script that is called...or something not sure yet.
             GetComponent<Rigidbody>().AddExplosionForce(150.0f, GetComponent<Rigidbody>().transform.position, 1.0f);
         }
+        SetHealthColor();
     }
 
 
-    public void Heal()
+    public void Heal(float heal)
     {
-        if (!m_bNoMax)
+        if (m_bNoMax)
         {
-            m_fHealth += m_fHealAmount;
-            if (m_fHealth > m_fMaxHealth)
+            m_UHealthBar.value += heal;
+            if (m_UHealthBar.maxValue > m_fMaxHealth)
             {
-                m_fHealth = m_fMaxHealth;
+                m_UHealthBar.maxValue += heal;
+                m_fMaxHealth += heal;
+                m_UHealthBar.value += heal;
             }
+            SetHealthColor();
         }
         else
         {
-            m_fHealth += m_fHealAmount;
+            m_UHealthBar.value += heal;
+            if (m_UHealthBar.maxValue > m_fMaxHealth)
+            {
+                m_UHealthBar.value = m_fMaxHealth;
+            }
+            SetHealthColor();
         }
        
     }
 
+
+    private void SetHealthColor()
+    {
+        m_UHealthBarColor.color = Color.Lerp(m_CNoHealth, m_CFullHealth, m_UHealthBar.value / m_fMaxHealth);
+    }
 }
