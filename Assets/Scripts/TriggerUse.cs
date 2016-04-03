@@ -10,7 +10,7 @@ public class TriggerUse : MonoBehaviour {
     bool m_bUseButton;
 
     [SerializeField]
-    bool m_bEnabled = true;
+    bool m_bEnabled;
 
     [SerializeField]
     float m_fUseTime;
@@ -72,8 +72,7 @@ public class TriggerUse : MonoBehaviour {
 
     void OnTriggerEnter(Collider collision)
     {
-        if (m_bEnabled)
-        {
+       
             //don't need to worry about use timer if we only use it once.
             if (m_bOneUse && m_bUsed == false)//could technically just destroy the trigger since it will only be used once anyways.
             {
@@ -109,13 +108,12 @@ public class TriggerUse : MonoBehaviour {
                     }
                 }
             }
-        }
+        
     }
 
     void OnTriggerStay(Collider collision)
     {
-        if (m_bEnabled)
-        {
+        
             if (m_bOneUse && m_bUsed == false)//could technically just destroy the trigger since it will only be used once anyways.
             {
                 if (m_bUseButton)
@@ -150,7 +148,7 @@ public class TriggerUse : MonoBehaviour {
                     }
                 }
             }
-        }
+        
     }
 
     void Used()
@@ -160,23 +158,26 @@ public class TriggerUse : MonoBehaviour {
         else
             PlayDisabledClip();
 
-        if (m_tTarget != null)
+
+        if (m_bEnabled)
         {
-            for (int i = 0; i < m_tTarget.Length; i++)
+            if (m_tTarget != null)
             {
-                m_tTarget[i].SendMessage("Use");
+                for (int i = 0; i < m_tTarget.Length; i++)
+                {
+                    m_tTarget[i].SendMessage("Use");
+                    Debug.Log(m_tTarget[i].name);
+                }
+                m_bUsed = true;
+                m_fTimer = 0.0f;
             }
-            m_bUsed = true;
-            m_fTimer = 0.0f;
-            Debug.Log(this.gameObject);
         }
     }
 
-
-    void Use(string sender)
+    void Use()
     {
-            Debug.Log(this.name + " this shouldn't happen");
-            m_bEnabled = !m_bEnabled;
+        m_bEnabled = !m_bEnabled;
+        Debug.Log("use");
     }
 
 }
