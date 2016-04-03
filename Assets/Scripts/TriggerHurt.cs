@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TriggerHurt : MonoBehaviour
+public class TriggerHurt : MonoBehaviour, IUseinterface
 {
 
     [SerializeField]
@@ -56,7 +56,7 @@ public class TriggerHurt : MonoBehaviour
         }
     }
 
-    void Use()
+    void IUseinterface.Use()
     {
         m_bEnabled = !m_bEnabled;
     }

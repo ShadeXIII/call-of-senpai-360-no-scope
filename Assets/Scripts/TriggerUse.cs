@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TriggerUse : MonoBehaviour {
+public class TriggerUse : MonoBehaviour, IUseinterface 
+{
 
     [SerializeField]
     bool m_bOneUse;
@@ -33,6 +34,8 @@ public class TriggerUse : MonoBehaviour {
     {
         m_bUsed = false;
         //set timer to usetime so you can use it immediatly
+        if (m_fUseTime == 0)
+            m_fUseTime = 0.1f;
         m_fTimer = m_fUseTime;
 	}
 	
@@ -72,82 +75,53 @@ public class TriggerUse : MonoBehaviour {
 
     void OnTriggerEnter(Collider collision)
     {
-       
-            //don't need to worry about use timer if we only use it once.
-            if (m_bOneUse && m_bUsed == false)//could technically just destroy the trigger since it will only be used once anyways.
-            {
-                if (m_bUseButton)
-                {
-                    if (Input.GetKeyDown(KeyCode.E))
-                    {
-                        Used();
-                    }
-                }
-                else
-                {
-                    Used();
-                }
-            }
-            else if (m_bOneUse == false)
-            {
-                if (m_bUseButton)
-                {
-                    if (m_fTimer >= m_fUseTime)
-                    {
-                        if (Input.GetKeyDown(KeyCode.E))
-                        {
-                            Used();
-                        }
-                    }
-                }
-                else
-                {
-                    if (m_fTimer >= m_fUseTime)
-                    {
-                        Used();
-                    }
-                }
-            }
-        
+        if (collision.tag == "Player") 
+            Trigger(collision);
     }
 
     void OnTriggerStay(Collider collision)
     {
-        
-            if (m_bOneUse && m_bUsed == false)//could technically just destroy the trigger since it will only be used once anyways.
+        if(collision.tag == "Player")
+            Trigger(collision);   
+    }
+
+    void Trigger(Collider collision)
+    {
+        //don't need to worry about use timer if we only use it once.
+        if (m_bOneUse && m_bUsed == false)//could technically just destroy the trigger since it will only be used once anyways.
+        {
+            if (m_bUseButton)
             {
-                if (m_bUseButton)
-                {
-                    if (Input.GetKeyDown(KeyCode.E))
-                    {
-                        Used();
-                    }
-                }
-                else
+                if (Input.GetButtonDown("Use"))
                 {
                     Used();
                 }
             }
-            else if (m_bOneUse == false)
+            else
             {
-                if (m_bUseButton)
+                Used();
+            }
+        }
+        else if (m_bOneUse == false)
+        {
+            if (m_bUseButton)
+            {
+                if (m_fTimer >= m_fUseTime)
                 {
-                    if (m_fTimer >= m_fUseTime)
-                    {
-                        if (Input.GetKeyDown(KeyCode.E))
-                        {
-                            Used();
-                        }
-                    }
-                }
-                else
-                {
-                    if (m_fTimer >= m_fUseTime)
+                    if (Input.GetButtonDown("Use"))
                     {
                         Used();
                     }
                 }
             }
+            else
+            {
+                if (m_fTimer >= m_fUseTime)
+                {
+                    Used();
+                }
+            }
+        }
         
     }
 
@@ -165,8 +139,14 @@ public class TriggerUse : MonoBehaviour {
             {
                 for (int i = 0; i < m_tTarget.Length; i++)
                 {
-                    m_tTarget[i].SendMessage("Use", 1.0f);
-                   // Debug.Log(m_tTarget[i].name);
+                    IUseinterface canuse = m_tTarget[i].gameObject.GetComponent<IUseinterface>();
+
+                    if (canuse != null)
+                    {
+                        //m_tTarget[i].SendMessage("IUseinterface.Use");
+                        canuse.Use();
+                    }
+                    
                 }
                 m_bUsed = true;
                 m_fTimer = 0.0f;
@@ -174,11 +154,10 @@ public class TriggerUse : MonoBehaviour {
         }
     }
 
-    void Use(float val)
+    void IUseinterface.Use()
     {
-        Debug.Log(m_bEnabled);
         m_bEnabled = !m_bEnabled;
-        Debug.Log(m_bEnabled);
     }
+
 
 }

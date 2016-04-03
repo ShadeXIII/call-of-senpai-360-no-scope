@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Func_Door : MonoBehaviour
+public class Func_Door : MonoBehaviour, IUseinterface
 {
     #region SerializedFields
     [SerializeField]
@@ -526,7 +526,7 @@ public class Func_Door : MonoBehaviour
             AudioSource.PlayClipAtPoint(m_tMoving, GetComponent<Rigidbody>().transform.position);
     }
 
-    void Use()
+    void IUseinterface.Use()
     {
         if (m_bUsedOnce == false && m_bToggle == false)
         {
