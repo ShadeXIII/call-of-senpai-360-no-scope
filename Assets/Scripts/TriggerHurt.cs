@@ -9,7 +9,7 @@ public class TriggerHurt : MonoBehaviour
     [SerializeField]
     float m_fROD;
     [SerializeField]
-    bool m_bEnabled = true;
+    bool m_bEnabled;
 
 
     private bool m_bDoDamage;
