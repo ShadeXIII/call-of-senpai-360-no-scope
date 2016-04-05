@@ -13,13 +13,11 @@ public class TriggerHurt : MonoBehaviour, IUseinterface
 
     private float m_fTime;
 
-    //private int test;
 
     // Use this for initialization
     void Start()
     {
         m_fTime = 0.0f;
-        test = 0;
     }
 
     void OnDrawGizmos()
@@ -64,8 +62,6 @@ public class TriggerHurt : MonoBehaviour, IUseinterface
 
     void IUseinterface.Use()
     {
-        //test++;
         m_bEnabled = !m_bEnabled;
-        //Debug.Log("toggled " + test);
     }
 }
