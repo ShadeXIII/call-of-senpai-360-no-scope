@@ -79,8 +79,8 @@ public class CharacterMover : MonoBehaviour
 
 		if (m_Animator.avatar.isValid) {
 			// Update animation.
-			m_Animator.SetBool ("Grounded", bGrounded);
-			m_Animator.SetFloat ("Speed", horizontalVelocity.magnitude / m_fMaxSpeed);
+			//m_Animator.SetBool ("Grounded", bGrounded);
+			//m_Animator.SetFloat ("Speed", horizontalVelocity.magnitude / m_fMaxSpeed);
 		}
 	}
 

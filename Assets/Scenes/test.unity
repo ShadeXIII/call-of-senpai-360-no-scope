@@ -1762,7 +1762,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 436777485}
   - 33: {fileID: 436777484}
-  - 114: {fileID: 436777483}
   - 135: {fileID: 436777482}
   - 23: {fileID: 436777480}
   - 114: {fileID: 436777481}
@@ -1808,8 +1807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eacd1c42a8473d34d946cbfbac4375fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fDamage: 1
-  m_fDamageRate: 5
+  m_fDamage: 5
+  m_fDamageRate: .5
   m_bEnabled: 0
 --- !u!135 &436777482
 SphereCollider:
@@ -1823,20 +1822,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &436777483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 436777479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eacd1c42a8473d34d946cbfbac4375fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_fDamage: 2
-  m_fDamageRate: 5
-  m_bEnabled: 0
 --- !u!33 &436777484
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2397,7 +2382,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 706622928}
   - 33: {fileID: 706622932}
-  - 114: {fileID: 706622931}
   - 135: {fileID: 706622930}
   - 114: {fileID: 706622929}
   m_Layer: 0
@@ -2430,8 +2414,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eacd1c42a8473d34d946cbfbac4375fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fDamage: 2
-  m_fDamageRate: 10
+  m_fDamage: 5
+  m_fDamageRate: .5
   m_bEnabled: 0
 --- !u!135 &706622930
 SphereCollider:
@@ -2445,20 +2429,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &706622931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 706622927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eacd1c42a8473d34d946cbfbac4375fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_fDamage: 0
-  m_fDamageRate: 0
-  m_bEnabled: 0
 --- !u!33 &706622932
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3019,7 +2989,7 @@ MonoBehaviour:
   m_bOneUse: 0
   m_bUseButton: 1
   m_bEnabled: 1
-  m_fUseTime: 1
+  m_fUseTime: 0
   m_tUse: {fileID: 8300000, guid: 3b9a4396e07fe2c4880d144f43576c74, type: 3}
   m_tDisabled: {fileID: 8300000, guid: e0ad8065d3af9f24cb4c3f4cb997f886, type: 3}
   m_tTarget:
