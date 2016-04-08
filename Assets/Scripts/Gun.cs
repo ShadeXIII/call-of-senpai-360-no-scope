@@ -57,10 +57,18 @@ public class Gun : MonoBehaviour {
             if (Physics.Raycast(transform.position, transform.forward, out hit, 50.0f))
             {
                 impacts[m_iCurrentImpact].transform.position = hit.point;
-                impacts[m_iCurrentImpact].GetComponent<ParticleSystem>().Play();
+                //impacts[m_iCurrentImpact].GetComponent<ParticleSystem>().Play();
                 if (++m_iCurrentImpact >= m_iMaxImpacts)
                 {
                     m_iCurrentImpact = 0;
+                }
+                if (hit.transform.gameObject.GetComponent<Health>())
+                {
+                    hit.transform.gameObject.GetComponent<Health>().TakeDamage(12.0f);
+                }
+                else if (hit.transform.gameObject.GetComponent<prop_health>())
+                {
+                    hit.transform.gameObject.GetComponent<prop_health>().TakeDamage(12.0f);
                 }
             }
         }
@@ -84,7 +92,7 @@ public class Gun : MonoBehaviour {
         //if (m_iAmmo > 0)
         //{
             m_iMagazine -= 1;
-            m_pMuzzleFlash.Play();
+           // m_pMuzzleFlash.Play();
             m_bShooting = true;
             AudioSource.PlayClipAtPoint(m_aGunShot, GetComponent<Transform>().position);
        // }
