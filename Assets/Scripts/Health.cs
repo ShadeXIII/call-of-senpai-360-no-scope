@@ -14,6 +14,9 @@ public class Health : MonoBehaviour {
     Slider m_UHealthBar;
 
     [SerializeField]
+    Text m_UDebugHealth;
+
+    [SerializeField]
     Image m_UHealthBarColor;
 
     [SerializeField]
@@ -28,12 +31,13 @@ public class Health : MonoBehaviour {
         m_UHealthBar.maxValue = m_fMaxHealth;
         m_UHealthBar.value = m_fMaxHealth;
         SetHealthColor();
+        m_UDebugHealth.text = m_UHealthBar.value.ToString();
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-
+        
 	}
 
     public void TakeDamage(float damage)
@@ -46,6 +50,8 @@ public class Health : MonoBehaviour {
             GetComponent<Rigidbody>().AddExplosionForce(150.0f, GetComponent<Rigidbody>().transform.position, 1.0f);
         }
         SetHealthColor();
+
+        m_UDebugHealth.text = m_UHealthBar.value.ToString();
     }
 
 
@@ -71,9 +77,22 @@ public class Health : MonoBehaviour {
             }
             SetHealthColor();
         }
-       
+
+
+        m_UDebugHealth.text = m_UHealthBar.value.ToString();
     }
 
+    public bool IsAtFullHealth()
+    {
+        if (m_fMaxHealth == m_UHealthBar.value && m_bNoMax == false)
+            return true;
+        else if (m_UHealthBar.value < m_fMaxHealth)
+            return false;
+        else if (m_bNoMax)
+            return false;
+        else
+            return false;
+    }
 
     private void SetHealthColor()
     {

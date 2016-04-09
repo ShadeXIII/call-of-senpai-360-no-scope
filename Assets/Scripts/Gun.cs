@@ -69,7 +69,12 @@ public class Gun : MonoBehaviour {
                 else if (hit.transform.gameObject.GetComponent<prop_health>())
                 {
                     hit.transform.gameObject.GetComponent<prop_health>().TakeDamage(12.0f);
+                    //hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(hit.transform.position);
                 }
+                //else
+                //{
+                //    //hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(hit.transform.position);
+                //}
             }
         }
     }
