@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour {
 
@@ -9,13 +10,20 @@ public class Gun : MonoBehaviour {
     //public GameObject m_gImpact;
     public AudioClip m_aGunShot;
     public AudioClip m_aReload;
-    public AudioClip m_aGetAmmo;
+    public AudioClip m_aEmpty;
     public GameObject m_oImpact;
+    public Camera m_cCamera;
+    public Text m_tTotalAmmo;
+    public Text m_tMagAmmo;
+
+    public int m_iMaxMagazine;
+    public int m_iMaxAmmo;
+
+    public int m_iMagazine;
+    public int m_iAmmo;
+    
 
 
-    private int m_iMaxMagazine;
-    private int m_iMagazine;
-    private int m_iAmmo;
     private bool m_bShooting;
 
     private GameObject[] impacts;
@@ -27,9 +35,9 @@ public class Gun : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
     {
-        m_iAmmo = 220;
-        m_iMagazine = 30;
-        m_iMaxMagazine = 30;
+        //m_iAmmo = 220;
+        //m_iMagazine = 30;
+        //m_iMaxMagazine = 30;
         m_bShooting = false;
 
         impacts = new GameObject[m_iMaxImpacts];
@@ -37,6 +45,8 @@ public class Gun : MonoBehaviour {
         {
             impacts[i] = (GameObject)Instantiate(m_oImpact);
         }
+
+        UpdateHUD();
 	}
 
     // Update is called once per frame
@@ -54,14 +64,9 @@ public class Gun : MonoBehaviour {
             RaycastHit hit;
 
 
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 50.0f))
+            if (Physics.Raycast(m_cCamera.transform.position, m_cCamera.transform.forward, out hit, 50.0f))
             {
-                impacts[m_iCurrentImpact].transform.position = hit.point;
-                //impacts[m_iCurrentImpact].GetComponent<ParticleSystem>().Play();
-                if (++m_iCurrentImpact >= m_iMaxImpacts)
-                {
-                    m_iCurrentImpact = 0;
-                }
+               
                 if (hit.transform.gameObject.GetComponent<Health>())
                 {
                     hit.transform.gameObject.GetComponent<Health>().TakeDamage(12.0f);
@@ -69,12 +74,20 @@ public class Gun : MonoBehaviour {
                 else if (hit.transform.gameObject.GetComponent<prop_health>())
                 {
                     hit.transform.gameObject.GetComponent<prop_health>().TakeDamage(12.0f);
-                    //hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(hit.transform.position);
+                    hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(m_cCamera.transform.forward * 400.0f);
                 }
-                //else
-                //{
-                //    //hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(hit.transform.position);
-                //}
+                else if(hit.transform.gameObject.GetComponent<Rigidbody>())
+                {
+                    hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(m_cCamera.transform.forward * 400.0f);
+                }
+
+
+                impacts[m_iCurrentImpact].transform.position = hit.point;
+                //impacts[m_iCurrentImpact].GetComponent<ParticleSystem>().Play();
+                if (++m_iCurrentImpact >= m_iMaxImpacts)
+                {
+                    m_iCurrentImpact = 0;
+                }
             }
         }
     }
@@ -94,24 +107,54 @@ public class Gun : MonoBehaviour {
 
     private void Shoot()
     {
-        //if (m_iAmmo > 0)
-        //{
+        if (m_iMagazine > 0)
+        {
             m_iMagazine -= 1;
-           // m_pMuzzleFlash.Play();
+            // m_pMuzzleFlash.Play();
             m_bShooting = true;
             AudioSource.PlayClipAtPoint(m_aGunShot, GetComponent<Transform>().position);
-       // }
+            UpdateHUD();
+        }
+        else if (m_iAmmo > 0 && m_iMagazine <= 0)
+        {
+            Reload();
+        }
+        else
+            AudioSource.PlayClipAtPoint(m_aEmpty, GetComponent<Transform>().position);
     }
 
     private void Reload()
     {
+        AudioSource.PlayClipAtPoint(m_aReload, GetComponent<Transform>().position);
         int difference = m_iMaxMagazine - m_iMagazine;
         m_iAmmo -= difference;
         m_iMagazine = m_iMaxMagazine;
+        UpdateHUD();
     }
 
-    public void GetAmmo(int ammo)
+    private void UpdateHUD()
     {
-        m_iAmmo += ammo;
+        m_tMagAmmo.text = m_iMagazine.ToString();
+        m_tTotalAmmo.text = m_iAmmo.ToString();
+    }
+
+    public void GiveAmmo(int ammo)
+    {
+        int ammoafterget = m_iAmmo + ammo;
+
+        if (ammoafterget > m_iMaxAmmo)
+            m_iAmmo = m_iMaxAmmo;
+        else
+            m_iAmmo += ammo;
+
+        UpdateHUD();
+    }
+
+    public bool IsAmmoFull()
+    {
+        if (m_iAmmo == m_iMaxAmmo)
+            return true;
+        else
+            return false;
     }
 }
