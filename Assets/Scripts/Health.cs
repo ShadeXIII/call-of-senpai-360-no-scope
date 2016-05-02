@@ -11,13 +11,13 @@ public class Health : MonoBehaviour {
     bool m_bNoMax;
 
     [SerializeField]
-    Slider m_UHealthBar;
+    public Slider m_UHealthBar;
 
     [SerializeField]
-    Text m_UDebugHealth;
+    public Text m_UDebugHealth;
 
     [SerializeField]
-    Image m_UHealthBarColor;
+    public Image m_UHealthBarColor;
 
     [SerializeField]
     Color m_CFullHealth;

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class Gun : MonoBehaviour {
+public class Gun : NetworkBehaviour {
 
     public float m_fReloadTime;
     public ParticleSystem m_pMuzzleFlash;
@@ -21,16 +22,20 @@ public class Gun : MonoBehaviour {
 
     public int m_iMagazine;
     public int m_iAmmo;
-    
 
+    private GameObject m_oLocalPlayer;
 
     private bool m_bShooting;
+
 
     private GameObject[] impacts;
     private int m_iCurrentImpact = 0;
     private int m_iMaxImpacts = 5;
 
     private float m_fReloadTimer;
+
+
+    private rpccaller playerrpc;
 
 	// Use this for initialization
 	void Start () 
@@ -45,8 +50,9 @@ public class Gun : MonoBehaviour {
         {
             impacts[i] = (GameObject)Instantiate(m_oImpact);
         }
-
         UpdateHUD();
+        playerrpc = GetComponentInParent<rpccaller>();
+        m_oLocalPlayer = GameObject.Find("LOCALPLAYER");
 	}
 
     // Update is called once per frame
@@ -59,38 +65,46 @@ public class Gun : MonoBehaviour {
     {
         if (m_bShooting)
         {
-            m_bShooting = false;
+            CastRay();
+        }
+    }
 
-            RaycastHit hit;
+    private void CastRay()
+    {
+        m_bShooting = false;
+
+        RaycastHit hit;
 
 
-            if (Physics.Raycast(m_cCamera.transform.position, m_cCamera.transform.forward, out hit, 50.0f))
+        if (Physics.Raycast(m_cCamera.transform.position, m_cCamera.transform.forward, out hit, 50.0f))
+        {
+
+            if (hit.transform.gameObject.GetComponent<Health>())
             {
-               
-                if (hit.transform.gameObject.GetComponent<Health>())
-                {
-                    hit.transform.gameObject.GetComponent<Health>().TakeDamage(12.0f);
-                }
-                else if (hit.transform.gameObject.GetComponent<prop_health>())
-                {
-                    hit.transform.gameObject.GetComponent<prop_health>().TakeDamage(12.0f);
-                    hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(m_cCamera.transform.forward * 400.0f);
-                }
-                else if(hit.transform.gameObject.GetComponent<Rigidbody>())
-                {
-                    hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(m_cCamera.transform.forward * 400.0f);
-                }
+                hit.transform.gameObject.GetComponent<Health>().TakeDamage(12.0f);
+                playerrpc.HitPlayer(m_oLocalPlayer, 1);
+            }
+            else if (hit.transform.gameObject.GetComponent<prop_health>())
+            {
+                hit.transform.gameObject.GetComponent<prop_health>().TakeDamage(12.0f);
+                hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(m_cCamera.transform.forward * 400.0f);
+            }
+            else if (hit.transform.gameObject.GetComponent<Rigidbody>())
+            {
+                hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(m_cCamera.transform.forward * 400.0f);
+            }
 
 
-                impacts[m_iCurrentImpact].transform.position = hit.point;
-                //impacts[m_iCurrentImpact].GetComponent<ParticleSystem>().Play();
-                if (++m_iCurrentImpact >= m_iMaxImpacts)
-                {
-                    m_iCurrentImpact = 0;
-                }
+            impacts[m_iCurrentImpact].transform.position = hit.point;
+            //impacts[m_iCurrentImpact].GetComponent<ParticleSystem>().Play();
+            if (++m_iCurrentImpact >= m_iMaxImpacts)
+            {
+                m_iCurrentImpact = 0;
             }
         }
     }
+
+    
 
     private void ButtonInput()
     {
@@ -102,6 +116,12 @@ public class Gun : MonoBehaviour {
         if (Input.GetButtonDown("Reload"))
         {
             Reload();
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            Debug.Log("fire2");
+            playerrpc.HitPlayer(m_oLocalPlayer, 3);
         }
     }
 
