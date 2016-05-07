@@ -12,6 +12,7 @@ public class CustomNetworkManager : NetworkManager
     {
         HideLobbyCamera();
         ShowHUD();
+        Cursor.lockState = CursorLockMode.Locked; // keep confined in the game window
     }
 
     public override void OnStartHost()

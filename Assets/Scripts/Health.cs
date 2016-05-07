@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class Health : MonoBehaviour {
+public class Health : NetworkBehaviour {
 
     [SerializeField]
     float m_fMaxHealth;
@@ -25,11 +26,18 @@ public class Health : MonoBehaviour {
     [SerializeField]
     Color m_CNoHealth;
 
+    [SerializeField]
+    AudioClip m_aPlayerHurt;
+
+    [SyncVar]
+    float m_fCurrentHealth;
+
 	// Use this for initialization
 	void Start () 
     {
         m_UHealthBar.maxValue = m_fMaxHealth;
         m_UHealthBar.value = m_fMaxHealth;
+        m_fCurrentHealth = m_fMaxHealth;
         SetHealthColor();
         m_UDebugHealth.text = m_UHealthBar.value.ToString();
 	}
@@ -43,6 +51,8 @@ public class Health : MonoBehaviour {
     public void TakeDamage(float damage)
     {
         m_UHealthBar.value -= damage;
+        m_fCurrentHealth -= damage;
+        AudioSource.PlayClipAtPoint(m_aPlayerHurt, GetComponent<Transform>().position);
         if(m_UHealthBar.value <= 0)
         {
             //do something because this thing is dead.
@@ -60,20 +70,24 @@ public class Health : MonoBehaviour {
         if (m_bNoMax)
         {
             m_UHealthBar.value += heal;
+            m_fCurrentHealth += heal;
             if (m_UHealthBar.maxValue > m_fMaxHealth)
             {
                 m_UHealthBar.maxValue += heal;
-                m_fMaxHealth += heal;
+                //m_fMaxHealth += heal;
                 m_UHealthBar.value += heal;
+                m_fCurrentHealth += heal;
             }
             SetHealthColor();
         }
         else
         {
             m_UHealthBar.value += heal;
+            m_fCurrentHealth += heal;
             if (m_UHealthBar.maxValue > m_fMaxHealth)
             {
                 m_UHealthBar.value = m_fMaxHealth;
+                m_fCurrentHealth = m_fMaxHealth;
             }
             SetHealthColor();
         }

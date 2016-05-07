@@ -37,7 +37,11 @@ public class NetoworkedPlayerScript : NetworkBehaviour
         health.m_UHealthBarColor = GameObject.Find("HealthBarFill").GetComponent<UnityEngine.UI.Image>();
 
         gunScript.m_tTotalAmmo = GameObject.Find("totalammoremaining").GetComponent<UnityEngine.UI.Text>();
-        gunScript.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>(); ;
+        gunScript.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
+        gunScript.m_hReloadSlider = GameObject.Find("ReloadSlider").GetComponent<UnityEngine.UI.Slider>();
+
+        if (gunScript.m_hReloadSlider == null)
+            Debug.Log("slider not found");
     }
 
 

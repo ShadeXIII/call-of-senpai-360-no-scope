@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 public class Gun : NetworkBehaviour {
 
     public float m_fReloadTime;
+    private bool m_bReloading;
+    private float m_fReloadTimer;
+
     public ParticleSystem m_pMuzzleFlash;
     public Transform m_tFlashLocation;
     //public GameObject m_gImpact;
@@ -16,6 +19,8 @@ public class Gun : NetworkBehaviour {
     public Camera m_cCamera;
     public Text m_tTotalAmmo;
     public Text m_tMagAmmo;
+    public Slider m_hReloadSlider;
+    public CanvasGroup m_cReloadAlpha;
 
     public int m_iMaxMagazine;
     public int m_iMaxAmmo;
@@ -32,9 +37,6 @@ public class Gun : NetworkBehaviour {
     private int m_iCurrentImpact = 0;
     private int m_iMaxImpacts = 5;
 
-    private float m_fReloadTimer;
-
-
     private rpccaller playerrpc;
 
 	// Use this for initialization
@@ -44,6 +46,8 @@ public class Gun : NetworkBehaviour {
         //m_iMagazine = 30;
         //m_iMaxMagazine = 30;
         m_bShooting = false;
+        m_bReloading = false;
+        m_fReloadTimer = 0.0f;
 
         impacts = new GameObject[m_iMaxImpacts];
         for (int i = 0; i < m_iMaxImpacts; i++)
@@ -51,6 +55,12 @@ public class Gun : NetworkBehaviour {
             impacts[i] = (GameObject)Instantiate(m_oImpact);
         }
         UpdateHUD();
+        m_hReloadSlider.value = 0;
+        m_hReloadSlider.enabled = false;
+        m_cReloadAlpha = m_hReloadSlider.GetComponent<CanvasGroup>();
+        m_cReloadAlpha.alpha = 0.0f;
+        m_hReloadSlider.maxValue = 1;
+
         playerrpc = GetComponentInParent<rpccaller>();
         m_oLocalPlayer = GameObject.Find("LOCALPLAYER");
 	}
@@ -63,9 +73,14 @@ public class Gun : NetworkBehaviour {
 
     void FixedUpdate()
     {
-        if (m_bShooting)
+        if (m_bShooting && m_bReloading == false)
         {
             CastRay();
+        }
+
+        if (m_bReloading)
+        {
+            UpdateReloadTimer();
         }
     }
 
@@ -110,12 +125,14 @@ public class Gun : NetworkBehaviour {
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Shoot();
+            if(m_bReloading == false)
+                Shoot();
         }
 
         if (Input.GetButtonDown("Reload"))
         {
-            Reload();
+            if(m_iAmmo > 0)
+                Reload();
         }
 
         if (Input.GetButtonDown("Fire2"))
@@ -123,6 +140,8 @@ public class Gun : NetworkBehaviour {
             Debug.Log("fire2");
             playerrpc.HitPlayer(m_oLocalPlayer, 3);
         }
+
+        
     }
 
     private void Shoot()
@@ -145,11 +164,30 @@ public class Gun : NetworkBehaviour {
 
     private void Reload()
     {
-        AudioSource.PlayClipAtPoint(m_aReload, GetComponent<Transform>().position);
-        int difference = m_iMaxMagazine - m_iMagazine;
-        m_iAmmo -= difference;
-        m_iMagazine = m_iMaxMagazine;
-        UpdateHUD();
+        m_bReloading = true;
+        m_hReloadSlider.enabled = true;
+        m_cReloadAlpha.alpha = 1.0f;
+    }
+
+    private void UpdateReloadTimer()
+    {
+        m_fReloadTimer += Time.deltaTime;
+        float percent = m_fReloadTimer / m_fReloadTime;
+        m_hReloadSlider.value = percent;
+
+        if (m_fReloadTimer > m_fReloadTime)
+        {
+            m_bReloading = false;
+            AudioSource.PlayClipAtPoint(m_aReload, GetComponent<Transform>().position);
+            int difference = m_iMaxMagazine - m_iMagazine;
+            m_iAmmo -= difference;
+            m_iMagazine = m_iMaxMagazine;
+            UpdateHUD();
+            m_hReloadSlider.enabled = false;
+            m_hReloadSlider.value = 0;
+            m_cReloadAlpha.alpha = 0.0f;
+            m_fReloadTimer = 0.0f;
+        }
     }
 
     private void UpdateHUD()
