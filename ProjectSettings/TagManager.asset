@@ -14,10 +14,10 @@ TagManager:
   - 
   - 
   - Trigger
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Terrain
+  - Prop
+  - NPC
   - 
   - 
   - 

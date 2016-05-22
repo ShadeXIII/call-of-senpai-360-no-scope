@@ -55,7 +55,10 @@ public class TriggerHurt : MonoBehaviour, IUseinterface
                 //do the dmg
                 m_fTime = 0.0f;
                 //Debug.Log(m_fDamage);
-                collision.gameObject.GetComponent<Health>().TakeDamage(m_fDamage);
+                if (collision.gameObject.GetComponent<Health>() != null)
+                    collision.gameObject.GetComponent<Health>().TakeDamage(m_fDamage);
+                else if (collision.gameObject.GetComponent<prop_health>() != null)
+                    collision.gameObject.GetComponent<prop_health>().TakeDamage(m_fDamage);
             }
         }
     }

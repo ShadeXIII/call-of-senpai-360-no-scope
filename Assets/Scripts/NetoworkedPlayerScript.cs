@@ -40,8 +40,6 @@ public class NetoworkedPlayerScript : NetworkBehaviour
         gunScript.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
         gunScript.m_hReloadSlider = GameObject.Find("ReloadSlider").GetComponent<UnityEngine.UI.Slider>();
 
-        if (gunScript.m_hReloadSlider == null)
-            Debug.Log("slider not found");
     }
 
 
@@ -59,13 +57,11 @@ public class NetoworkedPlayerScript : NetworkBehaviour
     {
         fpsController.enabled = isAlive;
         gunScript.enabled = isAlive;
-        fpsCamera.cullingMask = ~fpsCamera.cullingMask;
+        //fpsCamera.cullingMask = ~fpsCamera.cullingMask;
     }
 
-    [ClientRpc]
-    public void RpcResolveHit()
+    void PlayerDeath()
     {
-
         ToggleRenderer(false);
 
         if (isLocalPlayer)
@@ -75,8 +71,18 @@ public class NetoworkedPlayerScript : NetworkBehaviour
             transform.rotation = Spawn.rotation;
             ToggleControls(false);
         }
-        
+
+
         Invoke("Respawn", 2);
+    }
+
+    [ClientRpc]
+    public void RpcResolveHit(float damage)
+    {
+        health.TakeDamage(damage);
+
+        if (health.IsDead())
+            PlayerDeath();
     }
 
     void Respawn()
@@ -86,5 +92,7 @@ public class NetoworkedPlayerScript : NetworkBehaviour
         {
             ToggleControls(true);
         }
+
+        health.Heal(health.m_fMaxHealth);
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class Health : NetworkBehaviour {
 
     [SerializeField]
-    float m_fMaxHealth;
+    public float m_fMaxHealth;
 
     [SerializeField]
     bool m_bNoMax;
@@ -50,6 +50,7 @@ public class Health : NetworkBehaviour {
 
     public void TakeDamage(float damage)
     {
+
         m_UHealthBar.value -= damage;
         m_fCurrentHealth -= damage;
         AudioSource.PlayClipAtPoint(m_aPlayerHurt, GetComponent<Transform>().position);
@@ -108,8 +109,17 @@ public class Health : NetworkBehaviour {
             return false;
     }
 
+    public bool IsDead()
+    {
+        if (m_fCurrentHealth <= 0)
+            return true;
+        else
+            return false;
+    }
+
     private void SetHealthColor()
     {
         m_UHealthBarColor.color = Color.Lerp(m_CNoHealth, m_CFullHealth, m_UHealthBar.value / m_fMaxHealth);
     }
+
 }

@@ -39,6 +39,8 @@ public class Gun : NetworkBehaviour {
 
     private rpccaller playerrpc;
 
+    private ItemManipulation m_iItemManipScript;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -62,6 +64,7 @@ public class Gun : NetworkBehaviour {
         m_hReloadSlider.maxValue = 1;
 
         playerrpc = GetComponentInParent<rpccaller>();
+        m_iItemManipScript = m_cCamera.GetComponent<ItemManipulation>();
         m_oLocalPlayer = GameObject.Find("LOCALPLAYER");
 	}
 
@@ -96,8 +99,8 @@ public class Gun : NetworkBehaviour {
 
             if (hit.transform.gameObject.GetComponent<Health>())
             {
-                hit.transform.gameObject.GetComponent<Health>().TakeDamage(12.0f);
-                playerrpc.HitPlayer(m_oLocalPlayer, 1);
+                //hit.transform.gameObject.GetComponent<Health>().TakeDamage(12.0f);
+                playerrpc.HitPlayer(m_oLocalPlayer, 12.0f);
             }
             else if (hit.transform.gameObject.GetComponent<prop_health>())
             {
@@ -125,21 +128,22 @@ public class Gun : NetworkBehaviour {
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            if(m_bReloading == false)
+            //Debug.Log(m_iItemManipScript.IsHoldingObject());
+            if (m_bReloading == false && m_iItemManipScript.IsHoldingObject() == false)
                 Shoot();
         }
 
         if (Input.GetButtonDown("Reload"))
         {
-            if(m_iAmmo > 0)
+            if(m_iAmmo > 0 && m_iMagazine != m_iMaxMagazine)
                 Reload();
         }
 
-        if (Input.GetButtonDown("Fire2"))
-        {
-            Debug.Log("fire2");
-            playerrpc.HitPlayer(m_oLocalPlayer, 3);
-        }
+        //if (Input.GetButtonDown("Fire2"))
+        //{
+        //    Debug.Log("fire2");
+        //    playerrpc.HitPlayer(m_oLocalPlayer, 3);
+        //}
 
         
     }

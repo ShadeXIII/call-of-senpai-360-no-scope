@@ -13,7 +13,8 @@ GameObject:
   - 65: {fileID: 6500000}
   - 54: {fileID: 5447442}
   - 114: {fileID: 11466634}
-  m_Layer: 0
+  - 114: {fileID: 11456184}
+  m_Layer: 11
   m_Name: FirstAid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +32,7 @@ GameObject:
   - 33: {fileID: 3319806}
   - 65: {fileID: 6525780}
   - 23: {fileID: 2301066}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +46,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 368.97375, y: 0.701, z: 330.84406}
+  m_LocalPosition: {x: 376.83093, y: 0.246571, z: 322.4872}
   m_LocalScale: {x: 0.2727576, y: 0.2727578, z: 0.2727578}
   m_Children:
   - {fileID: 465824}
@@ -168,6 +169,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11456184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a7486ffd63b0dc4492ec4ed86090035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11466634
 MonoBehaviour:
   m_ObjectHideFlags: 1
