@@ -8,9 +8,12 @@ public class NetoworkedPlayerScript : NetworkBehaviour
     public Camera fpsCamera;
     public AudioListener audioListener;
     public Gun gunScript;
+    public Pistol pistolScript;
     public Health health;
     public CharacterMover mover;
     public CameraObjectFollower cameraObjFollower;
+    public WeaponsManager weaponsManager;
+    public ItemManipulation itemManipulation;
 
 
     public override void OnStartLocalPlayer()
@@ -22,6 +25,8 @@ public class NetoworkedPlayerScript : NetworkBehaviour
         health.enabled = true;
         mover.enabled = true;
         cameraObjFollower.enabled = true;
+        weaponsManager.enabled = true;
+        itemManipulation.enabled = true;
 
         gameObject.name = "LOCALPLAYER";
 
@@ -40,6 +45,14 @@ public class NetoworkedPlayerScript : NetworkBehaviour
         gunScript.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
         gunScript.m_hReloadSlider = GameObject.Find("ReloadSlider").GetComponent<UnityEngine.UI.Slider>();
 
+        pistolScript.m_tTotalAmmo = GameObject.Find("totalammoremaining").GetComponent<UnityEngine.UI.Text>();
+        pistolScript.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
+        pistolScript.m_hReloadSlider = GameObject.Find("ReloadSlider").GetComponent<UnityEngine.UI.Slider>();
+
+        weaponsManager.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
+        weaponsManager.m_tTotalAmmo = GameObject.Find("totalammoremaining").GetComponent<UnityEngine.UI.Text>();
+        weaponsManager.m_tDebugWeapon = GameObject.Find("DebugWeapon").GetComponent<UnityEngine.UI.Text>();
+
     }
 
 
@@ -57,6 +70,7 @@ public class NetoworkedPlayerScript : NetworkBehaviour
     {
         fpsController.enabled = isAlive;
         gunScript.enabled = isAlive;
+        weaponsManager.enabled = isAlive;
         //fpsCamera.cullingMask = ~fpsCamera.cullingMask;
     }
 
@@ -93,6 +107,7 @@ public class NetoworkedPlayerScript : NetworkBehaviour
             ToggleControls(true);
         }
 
+        weaponsManager.DeathReset();
         health.Heal(health.m_fMaxHealth);
     }
 }

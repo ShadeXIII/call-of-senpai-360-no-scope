@@ -13,11 +13,15 @@ public class TriggerHurt : MonoBehaviour, IUseinterface
 
     private float m_fTime;
 
+    private bool m_bAssignedrpcCaller;
+
+    private rpccaller m_sRpccaller;
 
     // Use this for initialization
     void Start()
     {
         m_fTime = 0.0f;
+        m_bAssignedrpcCaller = false;
     }
 
     void OnDrawGizmos()
@@ -55,12 +59,28 @@ public class TriggerHurt : MonoBehaviour, IUseinterface
                 //do the dmg
                 m_fTime = 0.0f;
                 //Debug.Log(m_fDamage);
+
                 if (collision.gameObject.GetComponent<Health>() != null)
-                    collision.gameObject.GetComponent<Health>().TakeDamage(m_fDamage);
+                {
+                    if(m_bAssignedrpcCaller == false)
+                        AssignrpcCaller(collision.gameObject.GetComponent<rpccaller>());
+
+                    m_sRpccaller.HitPlayer(collision.gameObject, m_fDamage);
+                }
                 else if (collision.gameObject.GetComponent<prop_health>() != null)
-                    collision.gameObject.GetComponent<prop_health>().TakeDamage(m_fDamage);
+                {
+                    if (m_bAssignedrpcCaller == false)
+                        AssignrpcCaller(GameObject.Find("LOCALPLAYER").GetComponent<rpccaller>());
+                    m_sRpccaller.HitProp(collision.gameObject, m_fDamage);
+                }
             }
         }
+    }
+
+    void AssignrpcCaller(rpccaller rpc)
+    {
+        m_sRpccaller = rpc;
+        m_bAssignedrpcCaller = true;
     }
 
     void IUseinterface.Use()

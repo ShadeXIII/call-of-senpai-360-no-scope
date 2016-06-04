@@ -3,11 +3,12 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class Gun : NetworkBehaviour {
-
+public class Pistol : NetworkBehaviour
+{
     public float m_fReloadTime;
     private bool m_bReloading;
     private float m_fReloadTimer;
+    public float m_fDamage;
 
     public ParticleSystem m_pMuzzleFlash;
     public Transform m_tFlashLocation;
@@ -40,14 +41,13 @@ public class Gun : NetworkBehaviour {
     private rpccaller playerrpc;
 
     private ItemManipulation m_iItemManipScript;
-    private int m_iWeaponID = 2;
+    private int m_iWeaponID = 1;
+
+
 
 	// Use this for initialization
 	void Start () 
     {
-        //m_iAmmo = 220;
-        //m_iMagazine = 30;
-        //m_iMaxMagazine = 30;
         m_bShooting = false;
         m_bReloading = false;
         m_fReloadTimer = 0.0f;
@@ -66,15 +66,15 @@ public class Gun : NetworkBehaviour {
 
         playerrpc = GetComponentInParent<rpccaller>();
         m_iItemManipScript = m_cCamera.GetComponent<ItemManipulation>();
-       
         m_oLocalPlayer = GameObject.Find("LOCALPLAYER");
 	}
-
-    // Update is called once per frame
-    void Update() 
+	
+	// Update is called once per frame
+	void Update () 
     {
         ButtonInput();
 	}
+
 
     void FixedUpdate()
     {
@@ -101,12 +101,11 @@ public class Gun : NetworkBehaviour {
 
             if (hit.transform.gameObject.GetComponent<Health>())
             {
-                //hit.transform.gameObject.GetComponent<Health>().TakeDamage(12.0f);
-                playerrpc.HitPlayer(m_oLocalPlayer, 12.0f);
+                playerrpc.HitPlayer(m_oLocalPlayer, m_fDamage);
             }
             else if (hit.transform.gameObject.GetComponent<prop_health>())
             {
-                hit.transform.gameObject.GetComponent<prop_health>().TakeDamage(12.0f);
+                hit.transform.gameObject.GetComponent<prop_health>().TakeDamage(m_fDamage);
                 hit.transform.gameObject.GetComponent<Rigidbody>().AddForce(m_cCamera.transform.forward * 400.0f);
             }
             else if (hit.transform.gameObject.GetComponent<Rigidbody>())
@@ -116,7 +115,6 @@ public class Gun : NetworkBehaviour {
 
 
             impacts[m_iCurrentImpact].transform.position = hit.point;
-            //impacts[m_iCurrentImpact].GetComponent<ParticleSystem>().Play();
             if (++m_iCurrentImpact >= m_iMaxImpacts)
             {
                 m_iCurrentImpact = 0;
@@ -124,30 +122,22 @@ public class Gun : NetworkBehaviour {
         }
     }
 
-    
+
 
     private void ButtonInput()
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            //Debug.Log(m_iItemManipScript.IsHoldingObject());
             if (m_bReloading == false && m_iItemManipScript.IsHoldingObject() == false)
                 Shoot();
         }
 
         if (Input.GetButtonDown("Reload"))
         {
-            if(m_iAmmo > 0 && m_iMagazine != m_iMaxMagazine)
+            if (m_iAmmo > 0 && m_iMagazine != m_iMaxMagazine)
                 Reload();
         }
-
-        //if (Input.GetButtonDown("Fire2"))
-        //{
-        //    Debug.Log("fire2");
-        //    playerrpc.HitPlayer(m_oLocalPlayer, 3);
-        //}
-
-        
+       
     }
 
     private void Shoot()
@@ -196,22 +186,11 @@ public class Gun : NetworkBehaviour {
         }
     }
 
-    private void UpdateHUD()
+
+    void UpdateHUD()
     {
         m_tMagAmmo.text = m_iMagazine.ToString();
         m_tTotalAmmo.text = m_iAmmo.ToString();
-    }
-
-    public void GiveAmmo(int ammo)
-    {
-        int ammoafterget = m_iAmmo + ammo;
-
-        if (ammoafterget > m_iMaxAmmo)
-            m_iAmmo = m_iMaxAmmo;
-        else
-            m_iAmmo += ammo;
-
-        UpdateHUD();
     }
 
     public bool IsAmmoFull()
