@@ -215,4 +215,36 @@ public class Pistol : NetworkBehaviour
     {
         return m_iWeaponID;
     }
+
+    public void GiveAmmo(int ammo, bool updatehud)
+    {
+        int test = m_iAmmo + ammo;
+        if (test < m_iMaxAmmo)
+            m_iAmmo += ammo;
+        else
+            m_iAmmo = m_iMaxAmmo;
+
+        if(updatehud)
+            UpdateHUD();
+    }
+
+    public void GiveMagAmmo(int ammo, bool updatehud)
+    {
+        //only used when picking up a weapon
+        //check just in case 
+        int test = m_iMagazine + ammo;
+        if (test < m_iMaxMagazine)
+            m_iMagazine += ammo;
+        else
+            m_iMagazine = m_iMaxMagazine;
+
+        if (updatehud)
+            UpdateHUD();
+    }
+
+    public void AmmoReset()
+    {
+        m_iAmmo = 0;
+        m_iMagazine = 0;
+    }
 }

@@ -5,6 +5,7 @@ public class WeaponPickup : MonoBehaviour {
 
 
     public int m_iAmmo;
+    public int m_iMag;
     public int m_iWeaponID;
     public AudioClip m_aGunGet;
 
@@ -22,12 +23,20 @@ public class WeaponPickup : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
+        Debug.Log("hit weapon pickup");
         if (col.gameObject.tag == "Player")
         {
-            col.gameObject.GetComponent<WeaponsManager>().WeaponPickedUp(m_iWeaponID);
+            col.gameObject.GetComponent<WeaponsManager>().WeaponPickedUp(m_iWeaponID, m_iAmmo, m_iMag);
             AudioSource.PlayClipAtPoint(m_aGunGet, transform.position);
-            Destroy(gameObject);
+            Destroy(gameObject.transform.parent.gameObject); //destroy the pickup
         }
+    }
+
+    public void AmmoForPickup(int ammo, int magammo)
+    {
+        //for when you drop a weapon.
+        m_iAmmo = ammo;
+        m_iMag = magammo;
     }
 
 }

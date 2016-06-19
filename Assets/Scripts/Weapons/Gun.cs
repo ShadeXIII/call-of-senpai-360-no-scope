@@ -202,7 +202,7 @@ public class Gun : NetworkBehaviour {
         m_tTotalAmmo.text = m_iAmmo.ToString();
     }
 
-    public void GiveAmmo(int ammo)
+    public void GiveAmmo(int ammo, bool updatehud)
     {
         int ammoafterget = m_iAmmo + ammo;
 
@@ -211,7 +211,22 @@ public class Gun : NetworkBehaviour {
         else
             m_iAmmo += ammo;
 
-        UpdateHUD();
+        if (updatehud)
+            UpdateHUD();
+    }
+
+    public void GiveMagAmmo(int ammo, bool updatehud)
+    {
+        //only used when picking up a weapon
+        //check just in case 
+        int test = m_iMagazine + ammo;
+        if (test < m_iMaxMagazine)
+            m_iMagazine += ammo;
+        else
+            m_iMagazine = m_iMaxMagazine;
+
+        if (updatehud)
+            UpdateHUD();
     }
 
     public bool IsAmmoFull()
@@ -235,5 +250,12 @@ public class Gun : NetworkBehaviour {
     public int GetWeaponID()
     {
         return m_iWeaponID;
+    }
+
+    public void AmmoReset()
+    {
+        m_iAmmo = 0;
+        m_iMagazine = 0;
+        UpdateHUD();
     }
 }
