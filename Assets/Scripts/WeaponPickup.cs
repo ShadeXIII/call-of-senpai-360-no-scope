@@ -29,6 +29,7 @@ public class WeaponPickup : MonoBehaviour {
             col.gameObject.GetComponent<WeaponsManager>().WeaponPickedUp(m_iWeaponID, m_iAmmo, m_iMag);
             AudioSource.PlayClipAtPoint(m_aGunGet, transform.position);
             Destroy(gameObject.transform.parent.gameObject); //destroy the pickup
+            Destroy(gameObject);
         }
     }
 

@@ -8,6 +8,10 @@ public class Gun : NetworkBehaviour {
     public float m_fReloadTime;
     private bool m_bReloading;
     private float m_fReloadTimer;
+    public float m_fROF;
+    private float m_fFireTimer;
+    private bool m_bFired;
+    public float m_fRaySpread;
 
     public ParticleSystem m_pMuzzleFlash;
     public Transform m_tFlashLocation;
@@ -50,7 +54,9 @@ public class Gun : NetworkBehaviour {
         //m_iMaxMagazine = 30;
         m_bShooting = false;
         m_bReloading = false;
+        m_bFired = false;
         m_fReloadTimer = 0.0f;
+        m_fFireTimer = 0.0f;
 
         impacts = new GameObject[m_iMaxImpacts];
         for (int i = 0; i < m_iMaxImpacts; i++)
@@ -73,6 +79,16 @@ public class Gun : NetworkBehaviour {
     // Update is called once per frame
     void Update() 
     {
+        if (m_bFired)
+        {
+            m_fFireTimer += Time.deltaTime;
+            if (m_fFireTimer >= m_fROF)
+            {
+                m_fFireTimer = 0.0f;
+                m_bFired = false;
+            }
+        }
+
         ButtonInput();
 	}
 
@@ -94,9 +110,12 @@ public class Gun : NetworkBehaviour {
         m_bShooting = false;
 
         RaycastHit hit;
+        Vector3 direction = m_cCamera.transform.forward;
+        direction.x += Random.Range(-m_fRaySpread, m_fRaySpread);
+        direction.y += Random.Range(-m_fRaySpread, m_fRaySpread);
+        direction.z += Random.Range(-m_fRaySpread, m_fRaySpread);
 
-
-        if (Physics.Raycast(m_cCamera.transform.position, m_cCamera.transform.forward, out hit, 50.0f))
+        if (Physics.Raycast(m_cCamera.transform.position, direction, out hit, 50.0f))
         {
 
             if (hit.transform.gameObject.GetComponent<Health>())
@@ -124,14 +143,12 @@ public class Gun : NetworkBehaviour {
         }
     }
 
-    
-
     private void ButtonInput()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
             //Debug.Log(m_iItemManipScript.IsHoldingObject());
-            if (m_bReloading == false && m_iItemManipScript.IsHoldingObject() == false)
+            if (m_bReloading == false && m_iItemManipScript.IsHoldingObject() == false && m_bFired == false)
                 Shoot();
         }
 
@@ -157,6 +174,7 @@ public class Gun : NetworkBehaviour {
             m_iMagazine -= 1;
             // m_pMuzzleFlash.Play();
             m_bShooting = true;
+            m_bFired = true;
             AudioSource.PlayClipAtPoint(m_aGunShot, GetComponent<Transform>().position);
             UpdateHUD();
         }

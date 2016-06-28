@@ -51,6 +51,7 @@ public class MeleeWeapon : NetworkBehaviour
             if (m_fFireTimer >= m_fROF)
             {
                 m_bDidPunch = false;
+                m_fFireTimer = 0.0f;
             }
         }
         else
@@ -61,7 +62,7 @@ public class MeleeWeapon : NetworkBehaviour
     {
         if (m_iItemManipScript.IsHoldingObject() == false)
         {
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButton("Fire1"))
             {
                 Punch();
                 m_bDidPunch = true;

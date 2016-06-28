@@ -9,6 +9,8 @@ public class NetoworkedPlayerScript : NetworkBehaviour
     public AudioListener audioListener;
     public Gun gunScript;
     public Pistol pistolScript;
+    public ShotGun shotgunScript;
+    public AutoRifle autorifleScript;
     public Health health;
     public CharacterMover mover;
     public CameraObjectFollower cameraObjFollower;
@@ -49,9 +51,18 @@ public class NetoworkedPlayerScript : NetworkBehaviour
         pistolScript.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
         pistolScript.m_hReloadSlider = GameObject.Find("ReloadSlider").GetComponent<UnityEngine.UI.Slider>();
 
+        shotgunScript.m_tTotalAmmo = GameObject.Find("totalammoremaining").GetComponent<UnityEngine.UI.Text>();
+        shotgunScript.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
+        shotgunScript.m_hReloadSlider = GameObject.Find("ReloadSlider").GetComponent<UnityEngine.UI.Slider>();
+
+        autorifleScript.m_tTotalAmmo = GameObject.Find("totalammoremaining").GetComponent<UnityEngine.UI.Text>();
+        autorifleScript.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
+        autorifleScript.m_hReloadSlider = GameObject.Find("ReloadSlider").GetComponent<UnityEngine.UI.Slider>();
+
         weaponsManager.m_tMagAmmo = GameObject.Find("magammo").GetComponent<UnityEngine.UI.Text>();
         weaponsManager.m_tTotalAmmo = GameObject.Find("totalammoremaining").GetComponent<UnityEngine.UI.Text>();
         weaponsManager.m_tDebugWeapon = GameObject.Find("DebugWeapon").GetComponent<UnityEngine.UI.Text>();
+
 
     }
 

@@ -8,7 +8,6 @@ public class WeaponsManager : NetworkBehaviour
 {
 
 
-   // private SortedDictionary<int,bool> m_dWeaponsDictionary;
     private int m_iCurrentWeaponID;
     private int m_iNumberofWeapons;
     private WeaponPickup m_oWeapontoThow;
@@ -23,12 +22,14 @@ public class WeaponsManager : NetworkBehaviour
     public Gun m_sGun; //id:2
     public Pistol m_sPistol; //id:1
     //private rifle m_sRifle;
-    //private shotgun m_sShotGun;
-    //private autorifle m_sAutoRifle;
+    public ShotGun m_sShotGun; //id:3
+    public AutoRifle m_sAutoRifle; //id:4
     //==================
     //renderers=========
     public MeshRenderer m_rGunRenderer;
     public MeshRenderer m_rPistolRenderer;
+    public MeshRenderer m_rShotgunRenderer;
+    public MeshRenderer m_rAutoRifleRenderer;
     //==================
     private bool[] m_bInventory;
     private bool m_bHasNoWeapons;
@@ -37,7 +38,7 @@ public class WeaponsManager : NetworkBehaviour
 	void Start () 
     {
         m_iCurrentWeaponID = 0;
-        m_iNumberofWeapons = 3; //add more numbers as more weapons are made.
+        m_iNumberofWeapons = 5; //add more numbers as more weapons are made.
         m_bInventory = new bool[m_iNumberofWeapons];
         for (int i = 0; i < m_iNumberofWeapons; i++)
         {
@@ -45,9 +46,9 @@ public class WeaponsManager : NetworkBehaviour
             
         }
         m_bInventory[0] = true;
-        Debug.Log(m_bInventory[0]);
-        Debug.Log(m_bInventory[1]);
-        Debug.Log(m_bInventory[2]);
+        //Debug.Log(m_bInventory[0]);
+        //Debug.Log(m_bInventory[1]);
+        //Debug.Log(m_bInventory[2]);
 
         m_bHasNoWeapons = true;
         ActivateProperScript();
@@ -113,6 +114,16 @@ public class WeaponsManager : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             m_iCurrentWeaponID = 2;
+            ActivateProperScript();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            m_iCurrentWeaponID = 3;
+            ActivateProperScript();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            m_iCurrentWeaponID = 4;
             ActivateProperScript();
         }
     }
@@ -195,6 +206,20 @@ public class WeaponsManager : NetworkBehaviour
                     else
                         return false;
                 }
+            case 3:
+                {
+                    if (m_sShotGun.IsAmmoFull())
+                        return true;
+                    else
+                        return false;
+                }
+            case 4:
+                {
+                    if (m_sAutoRifle.IsAmmoFull())
+                        return true;
+                    else
+                        return false;
+                }
             default:
                 {
                     return true;
@@ -220,6 +245,18 @@ public class WeaponsManager : NetworkBehaviour
                 {
                     m_sGun.GiveAmmo(ammo, updatehud);
                     m_sGun.GiveMagAmmo(magammo, updatehud);
+                    break;
+                }
+            case 3:
+                {
+                    m_sShotGun.GiveAmmo(ammo, updatehud);
+                    m_sShotGun.GiveMagAmmo(magammo, updatehud);
+                    break;
+                }
+            case 4:
+                {
+                    m_sAutoRifle.GiveAmmo(ammo, updatehud);
+                    m_sAutoRifle.GiveMagAmmo(magammo, updatehud);
                     break;
                 }
             default:
@@ -257,6 +294,8 @@ public class WeaponsManager : NetworkBehaviour
 
         m_sGun.AmmoReset();
         m_sPistol.AmmoReset();
+        m_sShotGun.AmmoReset();
+        m_sAutoRifle.AmmoReset();
 
         ActivateProperScript();
     }
@@ -264,6 +303,7 @@ public class WeaponsManager : NetworkBehaviour
     private void ActivateProperScript()
     {
         Debug.Log(m_iCurrentWeaponID);
+        DisableAllWeapons();
         switch (m_iCurrentWeaponID)
         {
             case 0:
@@ -271,45 +311,69 @@ public class WeaponsManager : NetworkBehaviour
                 //change UI to weapons ammo
                 m_tMagAmmo.text = m_sMeleeWeapon.GetAmmo();
                 m_tTotalAmmo.text = m_sMeleeWeapon.GetAmmo();
-                //disable and enable scripts
-                m_sGun.enabled = false;
-                m_sPistol.enabled = false;
+                //enable script
                 m_sMeleeWeapon.enabled = true;
-                //disable renderers
-                m_rGunRenderer.enabled = false;
-                m_rPistolRenderer.enabled = false;
                 break;
             case 1:
                 m_tDebugWeapon.text = "Pistol " + m_iCurrentWeaponID.ToString();
                 //change UI to weapons ammo
                 m_tMagAmmo.text = m_sPistol.GetMagAmmo().ToString();
                 m_tTotalAmmo.text = m_sPistol.GetTotalAmmo().ToString();
-                //disable and enable scripts
-                m_sMeleeWeapon.enabled = false;
-                m_sGun.enabled = false;
+                //enable script
                 m_sPistol.enabled = true;
-                //disable renderers
+                //enable renderer
                 m_rPistolRenderer.enabled = true;
-                m_rGunRenderer.enabled = false;
                 break;
             case 2:
                  m_tDebugWeapon.text = "Gun " + m_iCurrentWeaponID.ToString();
                 //change UI to weapons ammo
                 m_tMagAmmo.text = m_sGun.GetMagAmmo().ToString();
                 m_tTotalAmmo.text = m_sGun.GetTotalAmmo().ToString();
-                //disable and enable scripts
-                m_sMeleeWeapon.enabled = false;
-                m_sPistol.enabled = false;
+                //enable script
                 m_sGun.enabled = true;
-                //disable renderers
-                m_rPistolRenderer.enabled = false;
+                //enable renderer
                 m_rGunRenderer.enabled = true;
                 break;
+            case 3:
+                m_tDebugWeapon.text = "ShotGun " + m_iCurrentWeaponID.ToString();
+                //change UI to weapons ammo
+                m_tMagAmmo.text = m_sShotGun.GetMagAmmo().ToString();
+                m_tTotalAmmo.text = m_sShotGun.GetTotalAmmo().ToString();
+                //enable script
+                m_sShotGun.enabled = true;
+                //enable renderer
+                m_rShotgunRenderer.enabled = true;
+                break;
+            case 4:
+                m_tDebugWeapon.text = "Auto Rifle " + m_iCurrentWeaponID.ToString();
+                //change UI to weapons ammo
+                m_tMagAmmo.text = m_sAutoRifle.GetMagAmmo().ToString();
+                m_tTotalAmmo.text = m_sAutoRifle.GetTotalAmmo().ToString();
+                //enable script
+                m_sAutoRifle.enabled = true;
+                //enable renderer
+                m_rAutoRifleRenderer.enabled = true;
+                break;
             default:
+                m_tMagAmmo.text = "wm error";
+                m_tTotalAmmo.text = "activate proper script";
                 m_sMeleeWeapon.enabled = true;
-                m_sGun.enabled = false;
                 break;
         }
+    }
+
+    private void DisableAllWeapons()
+    {
+        m_sShotGun.enabled = false;
+        m_sPistol.enabled = false;
+        m_sMeleeWeapon.enabled = false;
+        m_sGun.enabled = false;
+        m_sAutoRifle.enabled = false;
+        //disable renderers
+        m_rPistolRenderer.enabled = false;
+        m_rGunRenderer.enabled = false;
+        m_rAutoRifleRenderer.enabled = false;
+        m_rShotgunRenderer.enabled = false;
     }
 
     public bool HasWeapon(int weaponid)
