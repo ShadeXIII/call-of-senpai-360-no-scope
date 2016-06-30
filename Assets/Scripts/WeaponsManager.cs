@@ -7,6 +7,11 @@ using UnityEngine.UI;
 public class WeaponsManager : NetworkBehaviour
 {
 
+    struct weapondropinfo
+    {
+        public int magammo;
+        public int totalammo;
+    };
 
     private int m_iCurrentWeaponID;
     private int m_iNumberofWeapons;
@@ -273,9 +278,16 @@ public class WeaponsManager : NetworkBehaviour
         {
             m_bInventory[m_iCurrentWeaponID] = false;
             //throw an instance of that weapon with all ammo.
+
+            weapondropinfo info = GetTotalAmmoForWeaponDrop(m_iCurrentWeaponID);
+            WeaponPickup drop = new WeaponPickup();
+            drop.AmmoForPickup(info.totalammo, info.magammo);
             m_oWeapontoThow.m_iWeaponID = m_iCurrentWeaponID;
             //m_oWeapontoThow.m_iAmmo = 
             //Instantiate(WeaponPickup, gameObject.transform.position, gameObject.transform.rotation);
+            m_iCurrentWeaponID = 0;
+
+            ActivateProperScript();
         }
     }
 
@@ -388,5 +400,41 @@ public class WeaponsManager : NetworkBehaviour
         }
     }
 
-   
+    private weapondropinfo GetTotalAmmoForWeaponDrop(int weaponid)
+    {
+        weapondropinfo drop;
+        switch (weaponid)
+        {
+            case 1:
+                {
+                    drop.totalammo = m_sPistol.GetTotalAmmo();
+                    drop.magammo = m_sPistol.GetMagAmmo();
+                    return drop;
+                }
+            case 2:
+                {
+                    drop.totalammo = m_sGun.GetTotalAmmo();
+                    drop.magammo = m_sGun.GetMagAmmo();
+                    return drop;
+                }
+            case 3:
+                {
+                    drop.totalammo = m_sShotGun.GetTotalAmmo();
+                    drop.magammo = m_sShotGun.GetMagAmmo();
+                    return drop;
+                }
+            case 4:
+                {
+                    drop.totalammo = m_sAutoRifle.GetTotalAmmo();
+                    drop.magammo = m_sAutoRifle.GetMagAmmo();
+                    return drop;
+                }
+            default:
+                {
+                    drop.totalammo = 9999999;
+                    drop.magammo = 9999999;
+                    return drop;
+                }
+        }
+    }
 }
