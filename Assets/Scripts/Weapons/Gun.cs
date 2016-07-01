@@ -276,4 +276,11 @@ public class Gun : NetworkBehaviour {
         m_iMagazine = 0;
         UpdateHUD();
     }
+
+    public bool HoldingItem()
+    {
+        bool holding = m_iItemManipScript.IsHoldingObject();
+        return holding;
+    }
+
 }

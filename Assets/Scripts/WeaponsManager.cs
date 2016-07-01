@@ -21,6 +21,7 @@ public class WeaponsManager : NetworkBehaviour
     public Text m_tTotalAmmo;
     public Text m_tMagAmmo;
     public Text m_tDebugWeapon;
+    public Camera m_cCamera;
 
     //weapons===========
     public MeleeWeapon m_sMeleeWeapon; //id:0
@@ -35,6 +36,12 @@ public class WeaponsManager : NetworkBehaviour
     public MeshRenderer m_rPistolRenderer;
     public MeshRenderer m_rShotgunRenderer;
     public MeshRenderer m_rAutoRifleRenderer;
+    //==================
+    //drops=============
+    public GameObject m_oPistolDrop;
+    public GameObject m_oGunDrop;
+    public GameObject m_oShotGunDrop;
+    public GameObject m_oAutoRifleDrop;
     //==================
     private bool[] m_bInventory;
     private bool m_bHasNoWeapons;
@@ -274,15 +281,18 @@ public class WeaponsManager : NetworkBehaviour
 
     private void ThrowWeapon()
     {
-        if (m_iCurrentWeaponID != 0 && Input.GetButtonDown("DropWeapon")) //can't thow away your arms.
+        bool holdingitem = m_sGun.HoldingItem();
+        if (m_iCurrentWeaponID != 0 && Input.GetButtonDown("DropWeapon") && holdingitem == false) //can't thow away your arms.
         {
             m_bInventory[m_iCurrentWeaponID] = false;
             //throw an instance of that weapon with all ammo.
 
-            weapondropinfo info = GetTotalAmmoForWeaponDrop(m_iCurrentWeaponID);
-            WeaponPickup drop = new WeaponPickup();
-            drop.AmmoForPickup(info.totalammo, info.magammo);
-            m_oWeapontoThow.m_iWeaponID = m_iCurrentWeaponID;
+            DropWeapon(m_iCurrentWeaponID);
+
+            //weapondropinfo info = GetTotalAmmoForWeaponDrop(m_iCurrentWeaponID);
+            //WeaponPickup drop = new WeaponPickup();
+            //drop.AmmoForPickup(info.totalammo, info.magammo);
+            //m_oWeapontoThow.m_iWeaponID = m_iCurrentWeaponID;
             //m_oWeapontoThow.m_iAmmo = 
             //Instantiate(WeaponPickup, gameObject.transform.position, gameObject.transform.rotation);
             m_iCurrentWeaponID = 0;
@@ -400,41 +410,50 @@ public class WeaponsManager : NetworkBehaviour
         }
     }
 
-    private weapondropinfo GetTotalAmmoForWeaponDrop(int weaponid)
+    private void DropWeapon(int weaponid)
     {
-        weapondropinfo drop;
+        GameObject clone;
+        Vector3 position = m_cCamera.transform.position + (m_cCamera.transform.forward * 3);
+        Quaternion rotation = m_cCamera.transform.rotation;
         switch (weaponid)
         {
             case 1:
-                {
-                    drop.totalammo = m_sPistol.GetTotalAmmo();
-                    drop.magammo = m_sPistol.GetMagAmmo();
-                    return drop;
-                }
+                m_oPistolDrop.GetComponentInChildren<WeaponPickup>().AmmoForPickup(m_sPistol.GetTotalAmmo(),m_sPistol.GetMagAmmo());
+                clone = m_oPistolDrop;
+                Instantiate(clone,position,rotation);
+                //clone.GetComponent<Rigidbody>().AddForce(transform.forward * 80);
+                m_bInventory[weaponid] = false;
+                m_sPistol.AmmoReset();
+                break;
             case 2:
-                {
-                    drop.totalammo = m_sGun.GetTotalAmmo();
-                    drop.magammo = m_sGun.GetMagAmmo();
-                    return drop;
-                }
+                m_oGunDrop.GetComponentInChildren<WeaponPickup>().AmmoForPickup(m_sGun.GetTotalAmmo(), m_sGun.GetMagAmmo());
+                clone = m_oGunDrop;
+                Instantiate(clone,position,rotation);
+                //clone.GetComponent<Rigidbody>().AddForce(transform.forward * 80);
+                m_bInventory[weaponid] = false;
+                m_sGun.AmmoReset();
+                break;
             case 3:
-                {
-                    drop.totalammo = m_sShotGun.GetTotalAmmo();
-                    drop.magammo = m_sShotGun.GetMagAmmo();
-                    return drop;
-                }
+                m_oShotGunDrop.GetComponent<WeaponPickup>().AmmoForPickup(m_sShotGun.GetTotalAmmo(), m_sShotGun.GetMagAmmo());
+                clone = m_oShotGunDrop;
+                Instantiate(clone,position,rotation);
+                //clone.GetComponent<Rigidbody>().AddForce(transform.forward * 80);
+                m_bInventory[weaponid] = false;
+                m_sShotGun.AmmoReset();
+                break;
             case 4:
-                {
-                    drop.totalammo = m_sAutoRifle.GetTotalAmmo();
-                    drop.magammo = m_sAutoRifle.GetMagAmmo();
-                    return drop;
-                }
+                m_oAutoRifleDrop.GetComponent<WeaponPickup>().AmmoForPickup(m_sAutoRifle.GetTotalAmmo(), m_sAutoRifle.GetMagAmmo());
+                clone = m_oAutoRifleDrop;
+                Instantiate(clone,position,rotation);
+                //clone.GetComponent<Rigidbody>().AddForce(transform.forward * 8000);
+                m_bInventory[weaponid] = false;
+                m_sAutoRifle.AmmoReset();
+                break;
             default:
-                {
-                    drop.totalammo = 9999999;
-                    drop.magammo = 9999999;
-                    return drop;
-                }
+                Debug.Log("Error Droping Weapon, inside DropWeapon.");
+                break;
         }
     }
+
+   
 }

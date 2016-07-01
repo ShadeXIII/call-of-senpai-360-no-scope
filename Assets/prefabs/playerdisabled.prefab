@@ -3357,7 +3357,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 169218}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 375.8975, y: 0, z: 343.1629}
+  m_LocalPosition: {x: 351.15417, y: 0, z: 335.57733}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 455214}
@@ -4414,6 +4414,7 @@ MonoBehaviour:
   m_tTotalAmmo: {fileID: 0}
   m_tMagAmmo: {fileID: 0}
   m_tDebugWeapon: {fileID: 0}
+  m_cCamera: {fileID: 2021960}
   m_sMeleeWeapon: {fileID: 11432886}
   m_sGun: {fileID: 11405858}
   m_sPistol: {fileID: 11491616}
@@ -4423,6 +4424,10 @@ MonoBehaviour:
   m_rPistolRenderer: {fileID: 2352660}
   m_rShotgunRenderer: {fileID: 2374544}
   m_rAutoRifleRenderer: {fileID: 2304852}
+  m_oPistolDrop: {fileID: 148554, guid: fd5fc5370477d494880ff08376db279c, type: 2}
+  m_oGunDrop: {fileID: 166460, guid: ddbb6e984bc4f9a4a90db6acb924a96c, type: 2}
+  m_oShotGunDrop: {fileID: 162732, guid: fdfcd2d6bdb84d141b226765198e8b72, type: 2}
+  m_oAutoRifleDrop: {fileID: 173390, guid: 96536618d3ab68348a37733d4af9355f, type: 2}
 --- !u!114 &11461658
 MonoBehaviour:
   m_ObjectHideFlags: 1

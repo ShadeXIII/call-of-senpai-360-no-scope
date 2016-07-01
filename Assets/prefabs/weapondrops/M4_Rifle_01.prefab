@@ -11,7 +11,8 @@ GameObject:
   - 33: {fileID: 3372704}
   - 65: {fileID: 6530788}
   - 23: {fileID: 2388562}
-  m_Layer: 0
+  - 114: {fileID: 11413548}
+  m_Layer: 11
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,8 +30,10 @@ GameObject:
   - 33: {fileID: 3313300}
   - 23: {fileID: 2391452}
   - 95: {fileID: 9586700}
-  - 114: {fileID: 11495668}
-  m_Layer: 0
+  - 54: {fileID: 5407422}
+  - 64: {fileID: 6438378}
+  - 114: {fileID: 11499786}
+  m_Layer: 11
   m_Name: M4_Rifle_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,8 +46,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166460}
-  m_LocalRotation: {x: 1.0720528e-33, y: 4.510281e-17, z: -2.3769091e-17, w: 1}
-  m_LocalPosition: {x: 369.37106, y: 0.6255, z: 336.33673}
+  m_LocalRotation: {x: -9.3389535e-18, y: 4.4125364e-17, z: -0.20705925, w: 0.9783284}
+  m_LocalPosition: {x: 361.74, y: 1.04, z: 342.43585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 488420}
@@ -128,6 +131,33 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158244}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &5407422
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166460}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!64 &6438378
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166460}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 1
+  m_Mesh: {fileID: 4300000, guid: 938dbaa0aa99e644f8a70c77f37a8a3d, type: 3}
 --- !u!65 &6530788
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -157,12 +187,12 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11495668
+--- !u!114 &11413548
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 166460}
+  m_GameObject: {fileID: 158244}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c282f9e73db85fe45a87e132b6994e39, type: 3}
@@ -171,7 +201,18 @@ MonoBehaviour:
   m_iAmmo: 60
   m_iMag: 0
   m_iWeaponID: 2
-  m_aGunGet: {fileID: 0}
+  m_aGunGet: {fileID: 8300000, guid: e1a8fbe3394e65845aca641b6c33b80a, type: 3}
+--- !u!114 &11499786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a7486ffd63b0dc4492ec4ed86090035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

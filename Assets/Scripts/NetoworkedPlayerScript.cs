@@ -66,7 +66,6 @@ public class NetoworkedPlayerScript : NetworkBehaviour
 
     }
 
-
     void ToggleRenderer(bool isAlive)
     {
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
