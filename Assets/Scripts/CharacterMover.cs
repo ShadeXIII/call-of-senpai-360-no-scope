@@ -55,9 +55,6 @@ public class CharacterMover : MonoBehaviour
 			m_vecCurrMoveDir.z = -1.0f;
 		}
 
-        if (Input.GetKey("escape"))
-            Application.Quit();
-
 		m_vecCurrMoveDir.Normalize ();
 		
 	}

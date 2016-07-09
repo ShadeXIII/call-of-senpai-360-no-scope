@@ -33,6 +33,8 @@ GameObject:
   - 54: {fileID: 5407422}
   - 64: {fileID: 6438378}
   - 114: {fileID: 11499786}
+  - 114: {fileID: 11456770}
+  - 114: {fileID: 11462788}
   m_Layer: 11
   m_Name: M4_Rifle_01
   m_TagString: Untagged
@@ -202,6 +204,58 @@ MonoBehaviour:
   m_iMag: 0
   m_iWeaponID: 2
   m_aGunGet: {fileID: 8300000, guid: e1a8fbe3394e65845aca641b6c33b80a, type: 3}
+--- !u!114 &11456770
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 221
+    i1: 187
+    i2: 110
+    i3: 152
+    i4: 75
+    i5: 196
+    i6: 249
+    i7: 164
+    i8: 169
+    i9: 13
+    i10: 182
+    i11: 172
+    i12: 185
+    i13: 36
+    i14: 169
+    i15: 108
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
+--- !u!114 &11462788
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &11499786
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -16,7 +16,9 @@ public class NetoworkedPlayerScript : NetworkBehaviour
     public CameraObjectFollower cameraObjFollower;
     public WeaponsManager weaponsManager;
     public ItemManipulation itemManipulation;
-
+    public PauseMenuScript pauseMenuScript;
+    public Canvas HUD;
+    public GameObject pausecanvas;
 
     public override void OnStartLocalPlayer()
     {
@@ -29,6 +31,8 @@ public class NetoworkedPlayerScript : NetworkBehaviour
         cameraObjFollower.enabled = true;
         weaponsManager.enabled = true;
         itemManipulation.enabled = true;
+        pauseMenuScript.enabled = true;
+
 
         gameObject.name = "LOCALPLAYER";
 
@@ -63,7 +67,9 @@ public class NetoworkedPlayerScript : NetworkBehaviour
         weaponsManager.m_tTotalAmmo = GameObject.Find("totalammoremaining").GetComponent<UnityEngine.UI.Text>();
         weaponsManager.m_tDebugWeapon = GameObject.Find("DebugWeapon").GetComponent<UnityEngine.UI.Text>();
 
-
+        pauseMenuScript.m_cHUD = GameObject.Find("HUD").GetComponent<Canvas>();
+        pauseMenuScript.m_cPauseMenu = GameObject.Find("pausemenu").GetComponent<Canvas>();
+        pauseMenuScript.m_cPauseMenu.enabled = false;
     }
 
     void ToggleRenderer(bool isAlive)

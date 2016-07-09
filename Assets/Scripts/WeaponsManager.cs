@@ -7,12 +7,6 @@ using UnityEngine.UI;
 public class WeaponsManager : NetworkBehaviour
 {
 
-    struct weapondropinfo
-    {
-        public int magammo;
-        public int totalammo;
-    };
-
     private int m_iCurrentWeaponID;
     private int m_iNumberofWeapons;
     private WeaponPickup m_oWeapontoThow;
@@ -324,7 +318,7 @@ public class WeaponsManager : NetworkBehaviour
 
     private void ActivateProperScript()
     {
-        Debug.Log(m_iCurrentWeaponID);
+        //Debug.Log(m_iCurrentWeaponID);
         DisableAllWeapons();
         switch (m_iCurrentWeaponID)
         {
@@ -434,7 +428,7 @@ public class WeaponsManager : NetworkBehaviour
                 m_sGun.AmmoReset();
                 break;
             case 3:
-                m_oShotGunDrop.GetComponent<WeaponPickup>().AmmoForPickup(m_sShotGun.GetTotalAmmo(), m_sShotGun.GetMagAmmo());
+                m_oShotGunDrop.GetComponentInChildren<WeaponPickup>().AmmoForPickup(m_sShotGun.GetTotalAmmo(), m_sShotGun.GetMagAmmo());
                 clone = m_oShotGunDrop;
                 Instantiate(clone,position,rotation);
                 //clone.GetComponent<Rigidbody>().AddForce(transform.forward * 80);

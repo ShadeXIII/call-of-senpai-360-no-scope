@@ -23,7 +23,7 @@ public class WeaponPickup : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log("hit weapon pickup");
+        //Debug.Log("hit weapon pickup");
         if (col.gameObject.tag == "Player")
         {
             col.gameObject.GetComponent<WeaponsManager>().WeaponPickedUp(m_iWeaponID, m_iAmmo, m_iMag);

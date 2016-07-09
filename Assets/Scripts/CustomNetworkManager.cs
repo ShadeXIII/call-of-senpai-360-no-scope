@@ -6,11 +6,12 @@ public class CustomNetworkManager : NetworkManager
 {
     public GameObject lobbyCamera;
     public GameObject HUD;
-
+    public GameObject pauseMenu;
 
     public override void OnStartClient(NetworkClient client)
     {
         HideLobbyCamera();
+        pauseMenu.SetActive(true);
         ShowHUD();
         Cursor.lockState = CursorLockMode.Locked; // keep confined in the game window
     }

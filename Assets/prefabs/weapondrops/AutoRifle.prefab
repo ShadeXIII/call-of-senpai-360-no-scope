@@ -15,6 +15,8 @@ GameObject:
   - 54: {fileID: 5483512}
   - 114: {fileID: 11448860}
   - 65: {fileID: 6562700}
+  - 114: {fileID: 11444472}
+  - 114: {fileID: 11450342}
   m_Layer: 11
   m_Name: AutoRifle
   m_TagString: Untagged
@@ -121,6 +123,38 @@ MonoBehaviour:
   m_iMag: 30
   m_iWeaponID: 4
   m_aGunGet: {fileID: 8300000, guid: e1a8fbe3394e65845aca641b6c33b80a, type: 3}
+--- !u!114 &11444472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 150
+    i1: 83
+    i2: 102
+    i3: 24
+    i4: 211
+    i5: 171
+    i6: 104
+    i7: 52
+    i8: 138
+    i9: 55
+    i10: 115
+    i11: 61
+    i12: 74
+    i13: 249
+    i14: 53
+    i15: 95
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &11448860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,6 +166,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7486ffd63b0dc4492ec4ed86090035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11450342
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
